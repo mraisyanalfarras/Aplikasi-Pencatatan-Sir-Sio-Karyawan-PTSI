@@ -1,0 +1,108 @@
+@extends('admin.app')
+
+@section('content')
+<div class="container mt-4">
+    <h2>Edit Data SIO</h2>
+    <a href="{{ route('datasios.index') }}" class="btn btn-secondary mb-3">Kembali</a>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ route('datasios.update', $dataSio->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <!-- Pilih Karyawan -->
+                <div class="mb-3">
+                    <label for="user_id" class="form-label">Nama Karyawan</label>
+                    <select name="user_id" id="user_id" class="form-control" required>
+                        <option value="">Pilih Karyawan</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" 
+                                    data-nik="{{ $user->nik }}" 
+                                    data-name="{{ $user->name }}" 
+                                    data-position="{{ $user->position }}"
+                                    {{ $user->id == $dataSio->user_id ? 'selected' : '' }}>
+                                {{ $user->name }} - {{ $user->nik }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Input otomatis -->
+                <div class="mb-3">
+                    <label for="nik" class="form-label">NIK</label>
+                    <input type="text" name="nik" id="nik" class="form-control" value="{{ $dataSio->nik }}" readonly required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nama</label>
+                    <input type="text" name="name" id="name" class="form-control" value="{{ $dataSio->name }}" readonly required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="position" class="form-label">Jabatan</label>
+                    <input type="text" name="position" id="position" class="form-control" value="{{ $dataSio->position }}" readonly required>
+                </div>
+
+                <!-- Form lainnya -->
+                <div class="mb-3">
+                    <label for="no_sio" class="form-label">No SIO</label>
+                    <input type="text" name="no_sio" id="no_sio" class="form-control" value="{{ $dataSio->no_sio }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="type" class="form-label">Jenis</label>
+                    <input type="text" name="type" id="type" class="form-control" value="{{ $dataSio->type }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="class" class="form-label">Kelas</label>
+                    <input type="text" name="class" id="class" class="form-control" value="{{ $dataSio->class }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="expire_date" class="form-label">Tanggal Expired</label>
+                    <input type="date" name="expire_date" id="expire_date" class="form-control" value="{{ $dataSio->expire_date }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-control" required>
+                        <option value="active" {{ $dataSio->status == 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="expired" {{ $dataSio->status == 'expired' ? 'selected' : '' }}>Expired</option>
+                        <option value="pending" {{ $dataSio->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Lokasi</label>
+                    <input type="text" name="location" id="location" class="form-control" value="{{ $dataSio->location }}" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('user_id').addEventListener('change', function() {
+        let selectedOption = this.options[this.selectedIndex];
+
+        document.getElementById('nik').value = selectedOption.getAttribute('data-nik') || '';
+        document.getElementById('name').value = selectedOption.getAttribute('data-name') || '';
+        document.getElementById('position').value = selectedOption.getAttribute('data-position') || '';
+    });
+</script>
+
+@endsection
