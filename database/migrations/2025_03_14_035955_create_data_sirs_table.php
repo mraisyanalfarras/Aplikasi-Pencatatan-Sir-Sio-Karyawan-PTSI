@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('data_sirs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('nik');
             $table->string('nama');
             $table->string('position');
             $table->string('no_sir')->unique();

@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DataSir extends Model
 {
     use HasFactory;
-    protected $table = 'data_sirs'; // 
 
     protected $fillable = [
         'user_id',
+        'nik',
         'nama',
         'position',
         'no_sir',
@@ -22,8 +21,13 @@ class DataSir extends Model
         'location',
     ];
 
-    public function user(): BelongsTo
+    protected $casts = [
+        'expire_date' => 'date',
+        'reminder' => 'date',
+    ];
+
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

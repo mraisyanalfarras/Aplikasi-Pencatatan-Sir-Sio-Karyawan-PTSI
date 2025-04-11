@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\DataSir;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class DataSirController extends Controller
 {
@@ -17,7 +16,7 @@ class DataSirController extends Controller
 
     public function create()
     {
-        $users = User::select('id', 'name')->get();
+        $users = User::all();
         return view('admin.datasirs.create', compact('users'));
     }
 
@@ -25,63 +24,69 @@ class DataSirController extends Controller
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
-            'nama' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
-            'no_sir' => 'required|string|unique:data_sirs',
+            'no_sir' => 'required|unique:data_sirs,no_sir',
             'expire_date' => 'required|date',
             'status' => 'required|in:active,expired,revoked',
-            'reminder' => 'nullable|date',
-            'location' => 'required|string|max:255',
+            'location' => 'required',
         ]);
 
-        DataSir::create($request->all());
-        return redirect()->route('datasirs.index')->with('success', 'Data SIR berhasil ditambahkan.');
-    }
+        $user = User::findOrFail($request->user_id);
 
-    public function show($id)
-    {
-        $dataSir = DataSir::with('user')->findOrFail($id);
-        return view('admin.datasirs.show', compact('dataSir'));
-    }
-
-    public function edit($id)
-    {
-        $dataSir = DataSir::findOrFail($id);
-        $users = User::select('id', 'name')->get();
-        return view('admin.datasirs.edit', compact('dataSir', 'users'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'nama' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
-            'no_sir' => 'required|string|unique:data_sirs,no_sir,' . $id,
-            'expire_date' => 'required|date',
-            'status' => 'required|in:active,expired,revoked',
-            'reminder' => 'nullable|date',
-            'location' => 'required|string|max:255',
-        ]);
-
-        DB::table('data_sirs')->where('id', $id)->update([
-            'user_id' => $request->user_id,
-            'nama' => $request->nama,
-            'position' => $request->position,
+        DataSir::create([
+            'user_id' => $user->id,
+            'nik' => $user->nik,
+            'nama' => $user->name,
+            'position' => $user->position,
             'no_sir' => $request->no_sir,
             'expire_date' => $request->expire_date,
             'status' => $request->status,
             'reminder' => $request->reminder,
             'location' => $request->location,
-            'updated_at' => now(),
         ]);
 
-        return redirect()->route('datasirs.index')->with('success', 'Data SIR berhasil diperbarui.');
+        return redirect()->route('datasirs.index')->with('success', 'Data SIR berhasil ditambahkan!');
     }
 
-    public function destroy($id)
+    public function show(DataSir $datasir)
     {
-        DB::table('data_sirs')->where('id', $id)->delete();
-        return redirect()->route('datasirs.index')->with('success', 'Data SIR berhasil dihapus.');
+        return view('admin.datasirs.show', compact('datasir'));
+    }
+
+    public function edit(DataSir $datasir)
+    {
+        $users = User::all();
+        return view('admin.datasirs.edit', compact('datasir', 'users'));
+    }
+
+    public function update(Request $request, DataSir $datasir)
+    {
+        $request->validate([
+            'no_sir' => 'required|unique:data_sirs,no_sir,' . $datasir->id,
+            'expire_date' => 'required|date',
+            'status' => 'required|in:active,expired,revoked',
+            'location' => 'required',
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+
+        $datasir->update([
+            'user_id' => $user->id,
+            'nik' => $user->nik,
+            'nama' => $user->name,
+            'position' => $user->position,
+            'no_sir' => $request->no_sir,
+            'expire_date' => $request->expire_date,
+            'status' => $request->status,
+            'reminder' => $request->reminder,
+            'location' => $request->location,
+        ]);
+
+        return redirect()->route('datasirs.index')->with('success', 'Data SIR berhasil diperbarui!');
+    }
+
+    public function destroy(DataSir $datasir)
+    {
+        $datasir->delete();
+        return redirect()->route('datasirs.index')->with('success', 'Data SIR berhasil dihapus!');
     }
 }

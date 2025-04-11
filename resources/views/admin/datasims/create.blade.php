@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>Tambah Data SIR</h2>
-    <a href="{{ route('datasirs.index') }}" class="btn btn-secondary mb-3">Kembali</a>
+    <h2>Tambah Data SIM</h2>
+    <a href="{{ route('datasims.index') }}" class="btn btn-secondary mb-3">Kembali</a>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -17,32 +17,34 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('datasirs.store') }}" method="POST">
+            <form action="{{ route('datasims.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
+                <!-- Pilih Karyawan -->
                 <div class="mb-3">
                     <label for="user_id" class="form-label">Nama Karyawan</label>
                     <select name="user_id" id="user_id" class="form-control" required>
                         <option value="">Pilih Karyawan</option>
                         @foreach($users as $user)
-                            <option value="{{ $user->id }}" 
-                                    data-nik="{{ $user->nik }}" 
-                                    data-nama="{{ $user->name }}" 
-                                    data-position="{{ $user->position }}">
+                            <option value="{{ $user->id }}"
+                                data-nik="{{ $user->nik }}"
+                                data-name="{{ $user->name }}"
+                                data-position="{{ $user->position }}">
                                 {{ $user->name }} - {{ $user->nik }}
                             </option>
                         @endforeach
                     </select>
                 </div>
 
+                <!-- Otomatis -->
                 <div class="mb-3">
                     <label for="nik" class="form-label">NIK</label>
                     <input type="text" name="nik" id="nik" class="form-control" readonly required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="nama" class="form-label">Nama</label>
-                    <input type="text" name="nama" id="nama" class="form-control" readonly required>
+                    <label for="name" class="form-label">Nama</label>
+                    <input type="text" name="name" id="name" class="form-control" readonly required>
                 </div>
 
                 <div class="mb-3">
@@ -50,9 +52,20 @@
                     <input type="text" name="position" id="position" class="form-control" readonly required>
                 </div>
 
+                <!-- Manual Input -->
                 <div class="mb-3">
-                    <label for="no_sir" class="form-label">No SIR</label>
-                    <input type="text" name="no_sir" id="no_sir" class="form-control" required>
+                    <label for="no_sim" class="form-label">No SIM</label>
+                    <input type="text" name="no_sim" id="no_sim" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="type_sim" class="form-label">Tipe SIM</label>
+                    <input type="text" name="type_sim" id="type_sim" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Lokasi</label>
+                    <input type="text" name="location" id="location" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
@@ -70,8 +83,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="location" class="form-label">Lokasi</label>
-                    <input type="text" name="location" id="location" class="form-control" required>
+                    <label for="foto" class="form-label">Upload Foto SIM (Opsional)</label>
+                    <input type="file" name="foto" id="foto" class="form-control">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan</button>
@@ -80,12 +93,12 @@
     </div>
 </div>
 
+<!-- Script Isi Otomatis -->
 <script>
     document.getElementById('user_id').addEventListener('change', function() {
         let selectedOption = this.options[this.selectedIndex];
-
         document.getElementById('nik').value = selectedOption.getAttribute('data-nik') || '';
-        document.getElementById('nama').value = selectedOption.getAttribute('data-nama') || '';
+        document.getElementById('name').value = selectedOption.getAttribute('data-name') || '';
         document.getElementById('position').value = selectedOption.getAttribute('data-position') || '';
     });
 </script>

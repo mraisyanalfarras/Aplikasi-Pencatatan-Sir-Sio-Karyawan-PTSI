@@ -23,6 +23,7 @@ class DataSirRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
+            'nik' => 'required|string|max:255',
             'nama' => 'required|string|max:255',
             'position' => 'required|string|max:255',
             'no_sir' => 'required|string|unique:data_sirs,no_sir,' . $this->route('datasir'),

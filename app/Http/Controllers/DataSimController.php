@@ -3,82 +3,122 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataSim;
-use App\Http\Requests\DataSimRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class DataSimController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dataSims = DataSim::with('user')->paginate(10);
-        return view('admin.datasims.index', compact('dataSims'));
+        $query = DataSim::query();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('expire_range')) {
+            $months = (int) $request->expire_range;
+            $targetDate = now()->addMonths($months);
+            $query->whereDate('expire_date', '<=', $targetDate);
+        }
+
+        if ($request->filled('q')) {
+            $search = $request->q;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('nik', 'like', "%$search%");
+            });
+        }
+
+        $datasims = $query->orderBy('reminder')->paginate(10);
+
+        return view('admin.datasims.index', compact('datasims'));
     }
 
     public function create()
     {
-        $users = \App\Models\User::select('id', 'nik', 'name')->get();
+        $users = User::all();
         return view('admin.datasims.create', compact('users'));
     }
 
-    public function store(DataSimRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-        $data['foto'] = $this->handleUploadFoto($request);
+        $request->validate([
+            'user_id'     => 'required|exists:users,id',
+            'nik'         => 'required|string',
+            'name'        => 'required|string',
+            'no_sim'      => 'required|string|unique:data_sims,no_sim',
+            'position'    => 'required|string',
+            'type_sim'    => 'required|string',
+            'location'    => 'required|string',
+            'expire_date' => 'required|date',
+            'status'      => 'required|in:active,expired,revoked',
+            'foto'        => 'nullable|image|max:9999',
+        ]);
+
+        $data = $request->all();
+        $data['reminder'] = Carbon::parse($request->expire_date)->subMonths(6)->toDateString();
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('sim_foto', 'public');
+        }
 
         DataSim::create($data);
 
         return redirect()->route('datasims.index')->with('success', 'Data SIM berhasil ditambahkan.');
     }
 
-    public function show($id)
+    public function show(DataSim $datasim)
     {
-        $dataSim = DataSim::with('user')->findOrFail($id);
-        return view('admin.datasims.show', compact('dataSim'));
+        return view('admin.datasims.show', compact('datasim'));
     }
 
-    public function edit($id)
+    public function edit(DataSim $datasim)
     {
-        $dataSim = DataSim::findOrFail($id);
-        $users = \App\Models\User::select('id', 'nik', 'name')->get();
-        return view('admin.datasims.edit', compact('dataSim', 'users'));
+        $users = User::all();
+        return view('admin.datasims.edit', compact('datasim', 'users'));
     }
 
-    public function update(DataSimRequest $request, $id)
+    public function update(Request $request, DataSim $datasim)
     {
-        $dataSim = DataSim::findOrFail($id);
-        $data = $request->validated();
-        $data['foto'] = $this->handleUploadFoto($request, $dataSim);
+        $request->validate([
+            'user_id'     => 'required|exists:users,id',
+            'nik'         => 'required|string',
+            'name'        => 'required|string',
+            'no_sim'      => 'required|string|unique:data_sims,no_sim,' . $datasim->id,
+            'position'    => 'required|string',
+            'type_sim'    => 'required|string',
+            'location'    => 'required|string',
+            'expire_date' => 'required|date',
+            'status'      => 'required|in:active,expired,revoked',
+            'foto'        => 'nullable|image|max:2048',
+        ]);
 
-        $dataSim->update($data);
+        $data = $request->all();
+        $data['reminder'] = Carbon::parse($request->expire_date)->subMonths(6)->toDateString();
+
+        if ($request->hasFile('foto')) {
+            if ($datasim->foto) {
+                Storage::disk('public')->delete($datasim->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('sim_foto', 'public');
+        }
+
+        $datasim->update($data);
 
         return redirect()->route('datasims.index')->with('success', 'Data SIM berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    public function destroy(DataSim $datasim)
     {
-        $dataSim = DataSim::findOrFail($id);
-
-        // Hapus foto dari storage jika ada
-        if ($dataSim->foto) {
-            Storage::disk('public')->delete($dataSim->foto);
+        if ($datasim->foto) {
+            Storage::disk('public')->delete($datasim->foto);
         }
 
-        $dataSim->delete();
+        $datasim->delete();
 
         return redirect()->route('datasims.index')->with('success', 'Data SIM berhasil dihapus.');
-    }
-
-    private function handleUploadFoto($request, $dataSim = null)
-    {
-        if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
-            if ($dataSim && $dataSim->foto) {
-                Storage::disk('public')->delete($dataSim->foto);
-            }
-            // Simpan foto baru di folder "foto_sim/"
-            return $request->file('foto')->store('foto_sim', 'public');
-        }
-        return $dataSim ? $dataSim->foto : null;
     }
 }
