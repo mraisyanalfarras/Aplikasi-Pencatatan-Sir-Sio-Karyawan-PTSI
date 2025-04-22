@@ -18,12 +18,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('position');
             $table->string('no_sio');
-            $table->string('type');
+            $table->string('type_sio');
             $table->string('class');
             $table->date('expire_date');
             $table->enum('status', ['active', 'expired', 'pending']);
             $table->date('reminder')->nullable();
             $table->string('location');
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf; // tambahkan use ini di atas
 
 class DataSimController extends Controller
 {
@@ -23,16 +24,30 @@ class DataSimController extends Controller
             $targetDate = now()->addMonths($months);
             $query->whereDate('expire_date', '<=', $targetDate);
         }
-
-        if ($request->filled('q')) {
-            $search = $request->q;
+        // Search by name or NIK
+        if ($request->filled('search')) {
+            $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%$search%")
-                  ->orWhere('nik', 'like', "%$search%");
+                $q->where('name', 'like', '%' . $search . '%')
+                ->orWhere('nik', 'like', '%' . $search . '%');
             });
         }
 
+         // Filter by expire date range
+    if ($request->filled('expire_start') && $request->filled('expire_end')) {
+        $query->whereBetween('expire_date', [$request->expire_start, $request->expire_end]);
+    } elseif ($request->filled('expire_start')) {
+        $query->where('expire_date', '>=', $request->expire_start);
+    } elseif ($request->filled('expire_end')) {
+        $query->where('expire_date', '<=', $request->expire_end);
+    }
+
+    $datasims = $query->orderBy('expire_date', 'asc')->paginate(10);
+
+
         $datasims = $query->orderBy('reminder')->paginate(10);
+
+
 
         return view('admin.datasims.index', compact('datasims'));
     }
@@ -121,4 +136,45 @@ class DataSimController extends Controller
 
         return redirect()->route('datasims.index')->with('success', 'Data SIM berhasil dihapus.');
     }
+
+
+    // 📄 Method Print PDF
+    public function print(Request $request)
+    {
+        $query = DataSim::query();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('expire_range')) {
+            $months = (int) $request->expire_range;
+            $targetDate = now()->addMonths($months);
+            $query->whereDate('expire_date', '<=', $targetDate);
+        }
+
+        if ($request->filled('q')) {
+            $search = $request->q;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('nik', 'like', "%$search%");
+            });
+        }
+
+        $datasims = $query->orderBy('reminder')->get();
+
+        $pdf = Pdf::loadView('admin.datasims.report', compact('datasims'));
+        return $pdf->download('laporan_data_sim.pdf');
+    }
+
+    public function exportPdf()
+{
+    $datasims = \App\Models\DataSim::all(); // ambil semua data SIM
+    $pdf = Pdf::loadView('admin.datasims.report_pdf', compact('datasims'))
+              ->setPaper('A4', 'landscape');
+
+    return $pdf->download('laporan-data-sim.pdf'); // Atau ->stream() kalau mau tampil dulu
+}
+
+    
 }

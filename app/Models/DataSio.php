@@ -2,42 +2,39 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class DataSio extends Model
 {
     use HasFactory;
 
+    protected $table = 'data_sios';
+
+    // Kolom yang dapat diisi
     protected $fillable = [
-        'user_id', 'nik', 'name', 'position', 'no_sio',
-        'type', 'class', 'expire_date', 'status', 'location'
+        'user_id',
+        'nik',
+        'name',
+        'position',
+        'no_sio',
+        'type_sio',
+        'class',
+        'expire_date',
+        'status',
+        'reminder',
+        'location',
+        'foto',
     ];
 
-
-    // Relasi ke User
+    // Relasi dengan user
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    public function reminder()
+{
+    return $this->morphOne(Reminder::class, 'remindable');
+}
 
-    // Scope untuk data yang masih aktif
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
-    }
-
-    // Scope untuk data yang kadaluarsa
-    public function scopeExpired($query)
-    {
-        return $query->where('status', 'expired');
-    }
-
-    // Scope untuk data yang mendekati kadaluarsa (misalnya 30 hari sebelum expired)
-    public function scopeExpiringSoon($query)
-    {
-        return $query->where('expire_date', '<=', now()->addDays(30))
-                     ->where('status', 'active');
-    }
 }

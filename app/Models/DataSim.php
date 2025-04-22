@@ -30,4 +30,9 @@ class DataSim extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    public function reminder()
+{
+    return $this->morphOne(Reminder::class, 'remindable');
+}
 }

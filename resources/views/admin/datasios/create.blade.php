@@ -60,12 +60,16 @@
 
                 <div class="mb-3">
                     <label for="type" class="form-label">Jenis</label>
-                    <input type="text" name="type" id="type" class="form-control" required>
+                    <input type="text" name="type_sio" id="type_sio" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="class" class="form-label">Kelas</label>
-                    <input type="text" name="class" id="class" class="form-control" required>
+                    <label for="class" class="form-label">class</label>
+                    <select name="class" id="class" class="form-control" required>
+                        <option value="active">1</option>
+                        <option value="expired">2</option>
+                        <option value="pending">3</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -86,7 +90,11 @@
                     <label for="location" class="form-label">Lokasi</label>
                     <input type="text" name="location" id="location" class="form-control" required>
                 </div>
-
+                
+                <div class="mb-3">
+                    <label for="foto" class="form-label">Upload Foto Sio (Opsional)</label>
+                    <input type="file" name="foto" id="foto" class="form-control">
+                </div>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>

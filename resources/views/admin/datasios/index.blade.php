@@ -3,72 +3,133 @@
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Data SIO</h2>
-        <a href="{{ route('datasios.create') }}" class="btn btn-primary">Tambah Data SIO</a>
+        <h2 class="fw-bold">Data SIO</h2>
+        <div>
+            <a href="{{ route('datasios.create') }}" class="btn btn-primary shadow-sm me-2">Tambah SIO</a>
+            {{-- <a href="{{ route('datasios.exportPdf') }}" target="_blank" class="btn btn-danger shadow-sm">
+                <i class="fa fa-file-pdf"></i> Cetak PDF
+            </a> --}}
+        </div>
     </div>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>No</th>
-                    <th>NIK</th>
-                    <th>Nama</th>
-                    <th>Jabatan</th>
-                    <th>No SIO</th>
-                    <th>Jenis</th>
-                    <th>Kelas</th>
-                    <th>Tanggal Expired</th>
-                    <th>Status</th>
-                    <th>Lokasi</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($dataSios as $key => $sio)
-                <tr>
-                    <td>{{ isset($dataSios) && method_exists($dataSios, 'firstItem') ? $dataSios->firstItem() + $key : $key + 1 }}</td>
-                    <td>{{ $sio->nik }}</td>
-                    <td>{{ $sio->name }}</td>
-                    <td>{{ $sio->position }}</td>
-                    <td>{{ $sio->no_sio }}</td>
-                    <td>{{ $sio->type }}</td>
-                    <td>{{ $sio->class }}</td>
-                    <td>{{ \Carbon\Carbon::parse($sio->expire_date)->format('d M Y') }}</td>
-                    <td>
-                        @php
-                            $statusColors = ['active' => 'success', 'expired' => 'danger', 'pending' => 'warning'];
-                        @endphp
-                        <span class="badge bg-{{ $statusColors[$sio->status] ?? 'secondary' }}">
-                            {{ ucfirst($sio->status) }}
-                        </span>
-                    </td>
-                    <td>{{ $sio->location }}</td>
-                    <td>
-                        <a href="{{ route('datasios.edit', $sio->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('datasios.destroy', $sio->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="11" class="text-center">Tidak ada data SIO yang tersedia.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+    {{-- FILTER --}}
+    <form method="GET" action="{{ route('datasios.index') }}" class="row g-2 mb-3">
+        <div class="col-md-3">
+            <input type="text" name="search" class="form-control" placeholder="Cari Nama / NIK" value="{{ request('search') }}">
+        </div>
+        <div class="col-md-2">
+            <select name="status" class="form-select">
+                <option value="">Semua Status</option>
+                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
+                <option value="revoked" {{ request('status') == 'revoked' ? 'selected' : '' }}>Revoked</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input type="date" name="expire_start" class="form-control" value="{{ request('expire_start') }}">
+        </div>
+        <div class="col-md-2">
+            <input type="date" name="expire_end" class="form-control" value="{{ request('expire_end') }}">
+        </div>
+        <div class="col-md-3 d-flex justify-content-end">
+            <button class="btn btn-secondary me-2">Filter</button>
+            <a href="{{ route('datasios.index') }}" class="btn btn-outline-secondary">Reset</a>
+        </div>
+    </form>
+
+    {{-- TABEL --}}
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <strong>Daftar Data SIO</strong>
+        </div>
+        <div class="card-body p-3">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle text-center mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>NIK</th>
+                            <th>Jabatan</th>
+                            <th>No SIO</th>
+                            <th>Tipe</th>
+                            <th>Lokasi</th>
+                            <th>Kelas</th> {{-- ✅ Kolom baru --}}
+                            <th>Expired</th>
+                            <th>Reminder</th>
+                            <th>Status</th>
+                            <th>Foto</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        @forelse($datasios as $key => $sio)
+                        <tr>
+                            <td>{{ $datasios->firstItem() + $key }}</td>
+                            <td>{{ $sio->name }}</td>
+                            <td>{{ $sio->nik }}</td>
+                            <td>{{ $sio->position }}</td>
+                            <td>{{ $sio->no_sio }}</td>
+                            <td>{{ $sio->type_sio }}</td>
+                            <td>{{ $sio->location }}</td>
+                            <td>{{ $sio->class }}</td> {{-- ✅ Data kelas --}}
+                            <td>{{ \Carbon\Carbon::parse($sio->expire_date)->format('d M Y') }}</td>
+                            <td>
+                                @if($sio->reminder)
+                                    <span class="badge bg-warning text-dark">
+                                        {{ \Carbon\Carbon::parse($sio->reminder)->format('d M Y') }}<br>
+                                        <small>({{ \Carbon\Carbon::parse($sio->reminder)->diffForHumans() }})</small>
+                                    </span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>
+                                @php
+                                    $statusColors = ['active' => 'success', 'expired' => 'danger', 'revoked' => 'secondary'];
+                                @endphp
+                                <span class="badge bg-{{ $statusColors[$sio->status] ?? 'secondary' }}">
+                                    {{ strtoupper($sio->status) }}
+                                </span>
+                            </td>
+                            <td>
+                                @if($sio->foto)
+                                    <img src="{{ asset('storage/' . $sio->foto) }}" alt="Foto SIO" width="50">
+                                @else
+                                    <span class="text-muted">Tidak Ada</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-1 flex-wrap">
+                                    <a href="{{ route('datasios.show', $sio->id) }}" class="btn btn-sm btn-info">Lihat</a>
+                                    <a href="{{ route('datasios.edit', $sio->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="{{ route('datasios.destroy', $sio->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="12" class="text-center">Tidak ada data SIO.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    @if(method_exists($dataSios, 'links'))
-    <div class="d-flex justify-content-center">
-        {{ $dataSios->links() }}
+    @if(method_exists($datasios, 'links'))
+    <div class="d-flex justify-content-center mt-3">
+        {{ $datasios->appends(request()->query())->links() }}
     </div>
     @endif
 </div>

@@ -2,144 +2,174 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Login &mdash; Farma Optical</title>
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+  <title>Login &mdash; PTSI</title>
 
-    <!-- General CSS Files -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Bootstrap & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
-            margin: 0;
-            background: url('../assets/img/backgrounds/IMG20241217173227.jpg') no-repeat center center fixed;
-            background-size: cover;
-            position: relative;
-        }
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: url('../assets/img/backgrounds/b95c28e4-2137-4669-a8a8-52b5845457c4.jpg') repeat;
+      background-size: cover;
+      animation: moveBackground 40s linear infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+    }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-        }
+    @keyframes moveBackground {
+      0% {
+        background-position: 0 0;
+      }
 
-        .login-container {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-        }
+      100% {
+        background-position: -300px -300px;
+      }
+    }
 
-        .login-card {
-            background: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
+    .login-wrapper {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      backdrop-filter: blur(15px);
+      padding: 40px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      color: #fff;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
 
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #6dd5ed;
-        }
+    .login-wrapper img {
+      width: 90px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    }
 
-        .btn-primary {
-            background-color: #6dd5ed;
-            border: none;
-        }
+    .login-wrapper h4 {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
 
-        .btn-primary:hover {
-            background-color: #5bb8d8;
-        }
+    .login-wrapper p {
+      font-size: 0.9rem;
+      color: #ddd;
+      margin-bottom: 20px;
+    }
 
-        .absolute-top-right {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-        }
+    .form-control {
+      border-radius: 12px;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
 
-        .alert {
-            margin-bottom: 20px;
-        }
-    </style>
+    .form-control:focus {
+      border-color: #2980b9;
+      box-shadow: 0 0 5px rgba(41, 128, 185, 0.6);
+    }
+
+    .input-group-text {
+      background-color: #3498db;
+      color: #fff;
+      border-radius: 12px 0 0 12px;
+    }
+
+    .btn-primary {
+      background-color: #3498db;
+      border: none;
+      border-radius: 12px;
+      padding: 10px;
+      font-weight: bold;
+      transition: 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+      background-color: #2c80b3;
+      transform: scale(1.03);
+    }
+
+    .alert {
+      font-size: 0.85rem;
+    }
+
+    .footer-text {
+      margin-top: 25px;
+      font-size: 0.8rem;
+      color: #f1f1f1;
+    }
+
+    @media (max-width: 480px) {
+      .login-wrapper {
+        padding: 30px 20px;
+      }
+
+      .login-wrapper img {
+        width: 75px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="login-container">
-        <div class="login-card">
-            <!-- Logo -->
-            <div class="text-center mb-4">
-                <img src="../assets/img/backgrounds/kacamata.png" alt="logo" width="150" class="shadow-light rounded-circle mb-5 mt-2">
-                <h4 class="fw-bold text-primary">Login</h4>
-                <p class="text-muted">Selamat Datang Farma Optical</p>
-                <p class="text-muted">Silakan masuk ke akun Anda</p>
-            </div>
+  <div class="login-wrapper">
+    <img src="../assets/img/backgrounds/kacamata.png" alt="PTSI Logo">
+    <h4>Login</h4>
+    <p>Selamat Datang di <strong>PTSI Work Place Training</strong></p>
+    <p>Silakan masuk ke akun Anda</p>
 
-            <!-- Display Errors -->
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <!-- Form Login -->
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Masukkan email Anda" value="{{ old('email') }}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password Anda" required>
-                </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </div>
-            </form>
-
-            <!-- Footer -->
-            <div class="text-center mt-4">
-                <p class="text-muted small">
-                    Copyright &copy; | Made with 💙 by Tim Developer
-                </p>
-            </div>
-        </div>
+    @if ($errors->any())
+    <div class="alert alert-danger text-start">
+      <ul class="mb-0">
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+      </ul>
     </div>
+    @endif
 
-    <!-- JS Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    @if (session('error'))
+    <div class="alert alert-danger">
+      {{ session('error') }}
+    </div>
+    @endif
 
+    @if (session('success'))
+    <div class="alert alert-success">
+      {{ session('success') }}
+    </div>
+    @endif
+
+    <form method="POST" action="{{ route('login') }}">
+      @csrf
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+        <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') }}" required>
+      </div>
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+        <input type="password" class="form-control" name="password" placeholder="Password" required>
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Masuk</button>
+      </div>
+    </form>
+
+    <div class="footer-text">
+      &copy; 2025 Farma Optical — Dibuat dengan ❤️ oleh Tim Pengembang
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

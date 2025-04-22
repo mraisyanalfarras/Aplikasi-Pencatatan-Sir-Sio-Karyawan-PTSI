@@ -13,15 +13,15 @@ class UserController extends Controller
     {
         $query = User::with('roles');
 
-        // Filter berdasarkan NIK
-        if ($request->has('nik') && $request->nik) {
-            $query->where('nik', 'like', '%' . $request->nik . '%');
-        }
-
-        // Filter berdasarkan nama
-        if ($request->has('name') && $request->name) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
+       // Pencarian berdasarkan nama atau NIK
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+              ->orWhere('nik', 'like', '%' . $search . '%');
+        });
+    }
+       
 
         // Filter berdasarkan posisi
         if ($request->has('position') && $request->position) {

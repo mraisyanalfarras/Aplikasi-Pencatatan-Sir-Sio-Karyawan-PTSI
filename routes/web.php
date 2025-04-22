@@ -11,6 +11,7 @@ use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController; // pastikan ini di bagian atas
 use App\Http\Controllers\ProfileController;
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
@@ -59,6 +60,11 @@ Route::get('/dashboard', function () {
 })->name('dashboard')->middleware('auth');
 
 
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
+
+
 Route::get('/get-user-data', [UserController::class, 'getUserData'])->name('get.user.data');
 
 
@@ -100,6 +106,11 @@ Route::get('/api/users/search', function (Request $request) {
     Route::resource('datasios', DatasioController::class);
     Route::resource('datasirs', DatasirController::class);
     Route::resource('datasims', DatasimController::class);
+    Route::get('/datasims/print', [App\Http\Controllers\DataSimController::class, 'print'])->name('datasims.print');
+    Route::get('/datasims/export-pdf', [DataSimController::class, 'exportPdf'])->name('datasims.exportPdf');
+
+
+
     Route::resource('send-promotions', SendPromotionController::class);
     Route::get('send-all-promotions', [EmailController::class, 'sendPromotionEmails'])->name('send.all.promotions');
 });

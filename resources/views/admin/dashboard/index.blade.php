@@ -2,94 +2,118 @@
 
 @section('content')
 <div class="container">
-    <!-- Page Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="h3">Dashboard</h1>
-            <p class="text-muted">Selamat datang di Dashboard Admin. Kelola informasi perusahaan dengan mudah dan efisien.</p>
+   <!-- Card: Header -->
+<div class="card shadow-sm mb-4" style="background-color: #003366;"> {{-- Biru Tua --}}
+    <div class="card-body">
+        <h1 class="h3 text-white">Dashboard</h1>
+        <p class="text-white">Selamat datang di Dashboard Admin. Kelola informasi perusahaan dengan mudah dan efisien.</p>
+    </div>
+</div>
+
+
+    <div class="row">
+        <!-- Data SIM -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm" style="background-color: #e6f4ea;"> {{-- Hijau Muda --}}
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Data SIM</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $simExpiringSoon->count() }} SIM</div>
+                            <p class="mb-0 mt-2">Akan Expired ≤ 3 Bulan</p>
+                        </div>
+                        <i class="bx bx-id-card fa-2x text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Data SIO -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm" style="background-color: #fff9e6;"> {{-- Kuning Muda --}}
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Data SIO</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $sioExpiringSoon->count() }} SIO</div>
+                            <p class="mb-0 mt-2">Akan Expired ≤ 3 Bulan</p>
+                        </div>
+                        <i class="bx bx-shield fa-2x text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Data SIR -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm" style="background-color: #ffecec;"> {{-- Merah Muda --}}
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Data SIR</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $sirExpiringSoon->count() }} SIR</div>
+                        </div>
+                        <i class="bx bx-bookmark fa-2x text-danger"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    
 
-    <!-- Dashboard Cards -->
-    <div class="row">
-        <!-- Card: Employees -->
-        @can('show employees')
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-left-success shadow-sm border-0">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Karyawan</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $employees_count ?? 0 }} Karyawan</div>
-                            <p class="mt-2 mb-0">Total karyawan aktif</p>
-                        </div>
-                        <div class="col-auto">
-                            <i class="bx bx-user fa-2x text-success"></i>
-                        </div>
-                    </div>
-                    <a href="{{ route('employees.index') }}" class="btn btn-success btn-sm mt-3">Kelola Karyawan</a>
-                </div>
-            </div>
+    <!-- Card: Tabel List Expired -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h6 class="m-0">Daftar Dokumen Mendekati Expired</h6>
         </div>
-        @endcan
-
-        <!-- Card: Patients -->
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-left-secondary shadow-sm border-0">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Pasien</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $pasiens_count ?? 0 }} Pasien</div>
-                            <p class="mt-2 mb-0">Total pasien terdaftar</p>
-                        </div>
-                        <div class="col-auto">
-                            <i class="bx bx-user-plus fa-2x text-secondary"></i>
-                        </div>
-                    </div>
-                    {{-- <a href="{{ route('pasiens.index') }}" class="btn btn-secondary btn-sm mt-3">Kelola Pasien</a> --}}
-                </div>
-            </div>
-        </div>
-
-        
-        
-        <!-- Card: Frames -->
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-left-dark shadow-sm border-0">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Frame</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $frames_count ?? 0 }} Frame</div>
-                            <p class="mt-2 mb-0">Total frame tersedia</p>
-                        </div>
-                        <div class="col-auto">
-                            <i class="bx bx-glasses fa-2x text-dark"></i>
-                        </div>
-                    </div>
-                    {{-- <a href="{{ route('frames.index') }}" class="btn btn-dark btn-sm mt-3">Kelola Frame</a> --}}
-                </div>
-            </div>
-        </div>
-
-        <!-- Card: Lenses -->
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-left-purple shadow-sm border-0">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-purple text-uppercase mb-1">Lensa</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $lensas_count ?? 0 }} Lensa</div>
-                            <p class="mt-2 mb-0">Total lensa tersedia</p>
-                        </div>
-                        <div class="col-auto">
-                            <i class="bx bx-circle fa-2x text-purple"></i>
-                        </div>
-                    </div>
-                    {{-- <a href="{{ route('lensas.index') }}" class="btn btn-purple btn-sm mt-3">Kelola Lensa</a> --}}
-                </div>
-            </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="thead-light">
+                    <tr class="text-center">
+                        <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Jenis</th>
+                        <th>Tanggal Expired</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($simExpiringSoon as $sim)
+                        <tr>
+                            <td>{{ $sim->nik }}</td>
+                            <td>{{ $sim->name }}</td>
+                            <td class="text-center">
+                                <span class="badge bg-success"><i class="bx bx-id-card me-1"></i>SIM</span>
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($sim->expire_date)->format('d-m-Y') }}</td>
+                        </tr>
+                    @endforeach
+                    @foreach($sioExpiringSoon as $sio)
+                        <tr>
+                            <td>{{ $sio->nik }}</td>
+                            <td>{{ $sio->name }}</td>
+                            <td class="text-center">
+                                <span class="badge bg-warning text-dark"><i class="bx bx-shield me-1"></i>SIO</span>
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($sio->expire_date)->format('d-m-Y') }}</td>
+                        </tr>
+                    @endforeach
+                    @foreach($sirExpiringSoon as $sir)
+                        <tr>
+                            <td>{{ $sir->nik }}</td>
+                            <td>{{ $sir->nama }}</td>
+                            <td class="text-center">
+                                <span class="badge bg-danger"><i class="bx bx-bookmark me-1"></i>SIR</span>
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($sir->expire_date)->format('d-m-Y') }}</td>
+                        </tr>
+                    @endforeach
+                    @if($simExpiringSoon->isEmpty() && $sioExpiringSoon->isEmpty() && $sirExpiringSoon->isEmpty())
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">Tidak ada data yang akan expired dalam 3 bulan ke depan.</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -2,21 +2,27 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>Data SIM</h2>
-
-    <a href="{{ route('datasims.create') }}" class="btn btn-primary mb-3">Tambah SIM</a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold">Data SIM</h2>
+        <div>
+            <a href="{{ route('datasims.create') }}" class="btn btn-primary shadow-sm me-2">Tambah SIM</a>
+            <a href="{{ route('datasims.exportPdf') }}" target="_blank" class="btn btn-danger shadow-sm">
+                <i class="fa fa-file-pdf"></i> Cetak PDF
+            </a>
+        </div>
+    </div>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     {{-- FILTER --}}
-    <form method="GET" action="{{ route('datasims.index') }}" class="row mb-4 g-2">
+    <form method="GET" action="{{ route('datasims.index') }}" class="row g-2 mb-3">
         <div class="col-md-3">
             <input type="text" name="search" class="form-control" placeholder="Cari Nama / NIK" value="{{ request('search') }}">
         </div>
         <div class="col-md-2">
-            <select name="status" class="form-control">
+            <select name="status" class="form-select">
                 <option value="">Semua Status</option>
                 <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
                 <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
@@ -29,84 +35,99 @@
         <div class="col-md-2">
             <input type="date" name="expire_end" class="form-control" value="{{ request('expire_end') }}">
         </div>
-        <div class="col-md-3 text-end">
-            <button class="btn btn-secondary">Filter</button>
+        <div class="col-md-3 d-flex justify-content-end">
+            <button class="btn btn-secondary me-2">Filter</button>
             <a href="{{ route('datasims.index') }}" class="btn btn-outline-secondary">Reset</a>
         </div>
     </form>
 
     {{-- TABEL --}}
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>NIK</th>
-                <th>Jabatan</th>
-                <th>No SIM</th>
-                <th>Tipe</th>
-                <th>Lokasi</th>
-                <th>Expired</th>
-                <th>Reminder</th>
-                <th>Status</th>
-                <th>Foto</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($datasims as $key => $sim)
-            <tr>
-                <td>{{ $datasims->firstItem() + $key }}</td>
-                <td>{{ $sim->name }}</td>
-                <td>{{ $sim->nik }}</td>
-                <td>{{ $sim->position }}</td>
-                <td>{{ $sim->no_sim }}</td>
-                <td>{{ $sim->type_sim }}</td>
-                <td>{{ $sim->location }}</td>
-                <td>{{ \Carbon\Carbon::parse($sim->expire_date)->format('d M Y') }}</td>
-                <td>
-                    @if($sim->reminder)
-                        <span class="badge bg-warning text-dark">
-                            {{ \Carbon\Carbon::parse($sim->reminder)->format('d M Y') }}
-                            <br>
-                            <small>({{ \Carbon\Carbon::parse($sim->reminder)->diffForHumans() }})</small>
-                        </span>
-                    @else
-                        <span class="text-muted">-</span>
-                    @endif
-                </td>
-                <td>
-                    <span class="badge bg-{{ $sim->status === 'active' ? 'success' : ($sim->status === 'expired' ? 'danger' : 'secondary') }}">
-                        {{ ucfirst($sim->status) }}
-                    </span>
-                </td>
-                <td>
-                    @if($sim->foto)
-                        <img src="{{ asset('storage/' . $sim->foto) }}" alt="Foto SIM" width="50">
-                    @else
-                        <span class="text-muted">Tidak Ada</span>
-                    @endif
-                </td>
-                <td>
-                    <a href="{{ route('datasims.show', $sim->id) }}" class="btn btn-info btn-sm">Lihat</a>
-                    <a href="{{ route('datasims.edit', $sim->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('datasims.destroy', $sim->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm">Hapus</button>
-                    </form>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="12" class="text-center">Tidak ada data SIM.</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <strong>Daftar Data SIM</strong>
+        </div>
+        <div class="card-body p-3">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle text-center mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>NIK</th>
+                            <th>Jabatan</th>
+                            <th>No SIM</th>
+                            <th>Tipe</th>
+                            <th>Lokasi</th>
+                            <th>Expired</th>
+                            <th>Reminder</th>
+                            <th>Status</th>
+                            <th>Foto</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($datasims as $key => $sim)
+                        <tr>
+                            <td>{{ $datasims->firstItem() + $key }}</td>
+                            <td>{{ $sim->name }}</td>
+                            <td>{{ $sim->nik }}</td>
+                            <td>{{ $sim->position }}</td>
+                            <td>{{ $sim->no_sim }}</td>
+                            <td>{{ $sim->type_sim }}</td>
+                            <td>{{ $sim->location }}</td>
+                            <td>{{ \Carbon\Carbon::parse($sim->expire_date)->format('d M Y') }}</td>
+                            <td>
+                                @if($sim->reminder)
+                                    <span class="badge bg-warning text-dark">
+                                        {{ \Carbon\Carbon::parse($sim->reminder)->format('d M Y') }}<br>
+                                        <small>({{ \Carbon\Carbon::parse($sim->reminder)->diffForHumans() }})</small>
+                                    </span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>
+                                @php
+                                    $statusColors = ['active' => 'success', 'expired' => 'danger', 'revoked' => 'secondary'];
+                                @endphp
+                                <span class="badge bg-{{ $statusColors[$sim->status] ?? 'secondary' }}">
+                                    {{ strtoupper($sim->status) }}
+                                </span>
+                            </td>
+                            <td>
+                                @if($sim->foto)
+                                    <img src="{{ asset('storage/' . $sim->foto) }}" alt="Foto SIM" width="50">
+                                @else
+                                    <span class="text-muted">Tidak Ada</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-1 flex-wrap">
+                                    <a href="{{ route('datasims.show', $sim->id) }}" class="btn btn-sm btn-info">Lihat</a>
+                                    <a href="{{ route('datasims.edit', $sim->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="{{ route('datasims.destroy', $sim->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="12" class="text-center">Tidak ada data SIM.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    <div class="d-flex justify-content-center">
+    @if(method_exists($datasims, 'links'))
+    <div class="d-flex justify-content-center mt-3">
         {{ $datasims->appends(request()->query())->links() }}
     </div>
+    @endif
 </div>
 @endsection

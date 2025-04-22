@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('status', ['active', 'expired', 'revoked'])->default('active');
             $table->date('reminder')->nullable();
             $table->string('location');
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

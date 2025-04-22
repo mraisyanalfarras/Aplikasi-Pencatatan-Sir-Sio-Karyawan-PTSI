@@ -73,6 +73,10 @@
                     <label for="location" class="form-label">Lokasi</label>
                     <input type="text" name="location" id="location" class="form-control" required>
                 </div>
+                <div class="mb-3">
+                    <label for="foto" class="form-label">Upload Foto SIM (Opsional)</label>
+                    <input type="file" name="foto" id="foto" class="form-control">
+                </div>
 
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </form>

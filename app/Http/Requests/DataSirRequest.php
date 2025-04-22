@@ -31,6 +31,7 @@ class DataSirRequest extends FormRequest
             'status' => 'required|in:active,expired,revoked',
             'reminder' => 'nullable|date',
             'location' => 'required|string|max:255',
+            'foto' => 'nullable|string|max:255'
         ];
     }
 }

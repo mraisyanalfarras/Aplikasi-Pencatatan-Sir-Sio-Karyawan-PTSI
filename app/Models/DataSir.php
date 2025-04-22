@@ -9,6 +9,9 @@ class DataSir extends Model
 {
     use HasFactory;
 
+    protected $table = 'data_sirs';
+
+    // Kolom yang dapat diisi
     protected $fillable = [
         'user_id',
         'nik',
@@ -19,15 +22,17 @@ class DataSir extends Model
         'status',
         'reminder',
         'location',
+        'foto',
     ];
 
-    protected $casts = [
-        'expire_date' => 'date',
-        'reminder' => 'date',
-    ];
-
+    // Relasi dengan user
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
+    public function reminder()
+{
+    return $this->morphOne(Reminder::class, 'remindable');
+}
+
 }

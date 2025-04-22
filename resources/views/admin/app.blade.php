@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Aplikasi Farma Optical | Sistem Informasi Farma Optical</title>
+    <title>Aplikasi Data SIR, SIO, SIM Karyawan</title>
     <meta name="description" content="Sistem manajemen karyawan terintegrasi" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
@@ -39,7 +39,7 @@
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
                     <a href="{{ route('dashboard') }}" class="app-brand-link">
-                        <h1 class="h4">Sistem Informasi Farma Optical</h1>
+                        <h1 class="h4">PTSI</h1>
                     </a>
 
                     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -50,7 +50,7 @@
                 <div class="menu-inner-shadow"></div>
 
                 <ul class="menu-inner py-1">
-                    <!-- Menu SDM -->
+                    {{-- <!-- Menu SDM -->
                     <li class="menu-item">
                         <a href="#" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-group"></i>
@@ -82,7 +82,7 @@
                             </li>
                             @endcan
                         </ul>
-                    </li>
+                    </li> --}}
 
                     <!-- Customer Relationship Management -->
                     <li class="menu-item">
@@ -115,12 +115,7 @@
                                 </a>
                             </li>
 
-                            <li class="menu-item">
-                                {{-- <a href="{{ route('pesanan.index') }}" class="menu-link"> --}}
-                                    <i class="menu-icon tf-icons bx bx-list-check fa-2x text-dark"></i>
-                                    <div>Pesanan</div>
-                                </a>
-                            </li>
+                         
                             {{-- <li class="menu-item">
                                 <a href="{{ route('send-promotions.index') }}" class="menu-link">
                                     <i class="menu-icon tf-icons bx bx-mail-send"></i>

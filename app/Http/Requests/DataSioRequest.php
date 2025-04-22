@@ -29,6 +29,7 @@ class DataSioRequest extends FormRequest
             'expire_date' => 'required|date',
             'status' => 'required|in:active,expired,pending',
             'location' => 'required|string|max:255',
+            'foto' => 'nullable|string|max:255'
         ];
     }
 
