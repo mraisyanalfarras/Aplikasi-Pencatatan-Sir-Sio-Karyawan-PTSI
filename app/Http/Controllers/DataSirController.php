@@ -54,7 +54,7 @@ class DataSirController extends Controller
             'location'    => 'required|string',
             'expire_date' => 'required|date',
             'status'      => 'required|in:active,expired,revoked',
-            'foto'        => 'nullable|image|max:9999',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $data = $request->all();

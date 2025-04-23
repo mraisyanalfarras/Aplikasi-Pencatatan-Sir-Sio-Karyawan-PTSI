@@ -1,31 +1,81 @@
 @extends('admin.app')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg rounded-3">
-                <div class="card-header bg-white py-3">
-                    <h5 class="card-title text-primary fw-bold">
-                        <i class="fas fa-eye me-2"></i>Detail Data SIO
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <tr><th>NIK User</th><td>{{ $dataSio->user->nik }} - {{ $dataSio->user->name }}</td></tr>
-                        <tr><th>Nama</th><td>{{ $dataSio->name }}</td></tr>
-                        <tr><th>Posisi</th><td>{{ $dataSio->position }}</td></tr>
-                        <tr><th>No SIO</th><td>{{ $dataSio->no_sio }}</td></tr>
-                        <tr><th>Tipe</th><td>{{ $dataSio->type }}</td></tr>
-                        <tr><th>Kelas</th><td>{{ $dataSio->class }}</td></tr>
-                        <tr><th>Masa Berlaku</th><td>{{ $dataSio->expire_date }}</td></tr>
-                        <tr><th>Status</th><td>{{ ucfirst($dataSio->status) }}</td></tr>
-                        <tr><th>Lokasi</th><td>{{ $dataSio->location }}</td></tr>
-                    </table>
-                    <div class="text-end">
-                        <a href="{{ route('datasios.index') }}" class="btn btn-secondary">Kembali</a>
-                    </div>
-                </div>
+<div class="container mt-5">
+    <div class="card shadow-sm rounded-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 fw-bold">Detail Data SIO</h4>
+            <a href="{{ route('datasios.index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Kembali
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <tbody>
+                        <tr>
+                            <th width="30%">NIK User</th>
+                            <td>{{ $datasio->user->nik }} - {{ $datasio->user->name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nama</th>
+                            <td>{{ $datasio->name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Posisi</th>
+                            <td>{{ $datasio->position }}</td>
+                        </tr>
+                        <tr>
+                            <th>No SIO</th>
+                            <td>{{ $datasio->no_sio }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipe</th>
+                            <td>{{ $datasio->type_sio }}</td>
+                        </tr>
+                        <tr>
+                            <th>Kelas</th>
+                            <td>{{ $datasio->class }}</td>
+                        </tr>
+                        <tr>
+                            <th>Lokasi</th>
+                            <td>{{ $datasio->location }}</td>
+                        </tr>
+                        <tr>
+                            <th>Masa Berlaku</th>
+                            <td>{{ \Carbon\Carbon::parse($datasio->expire_date)->format('d M Y') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                <span class="badge bg-{{ $datasio->status == 'active' ? 'success' : ($datasio->status == 'expired' ? 'danger' : 'secondary') }}">
+                                    {{ ucfirst($datasio->status) }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Reminder</th>
+                            <td>
+                                @if($datasio->reminder)
+                                    {{ \Carbon\Carbon::parse($datasio->reminder)->format('d M Y') }}
+                                    <br><small class="text-muted">({{ \Carbon\Carbon::parse($datasio->reminder)->diffForHumans() }})</small>
+                                @else
+                                    <em class="text-muted">Tidak tersedia</em>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Foto SIO</th>
+                            <td>
+                                @if($datasio->foto)
+                                    <img src="{{ asset('storage/' . $datasio->foto) }}" class="img-thumbnail" style="max-height: 200px;">
+                                @else
+                                    <span class="text-muted">Tidak ada foto</span>
+                                @endif
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -90,9 +90,6 @@ Route::get('/api/users/search', function (Request $request) {
 
     // Rute untuk manajemen SDM
     Route::resource('departments', DepartmentController::class);
-    Route::resource('employees', EmployeeController::class);
-    Route::resource('payroll', PayrollController::class);
-    Route::resource('leave', LeaveController::class);
     Route::resource('attendance', AttendanceController::class);
 
     Route::middleware('auth')->group(function () {
@@ -101,8 +98,6 @@ Route::get('/api/users/search', function (Request $request) {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-    Route::resource('customers', CustomersController::class);
-    Route::resource('promotions', PromotionController::class);
     Route::resource('datasios', DatasioController::class);
     Route::resource('datasirs', DatasirController::class);
     Route::resource('datasims', DatasimController::class);

@@ -17,7 +17,8 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('datasios.store') }}" method="POST">
+            <form action="{{ route('datasios.store') }}" method="POST" enctype="multipart/form-data">
+
                 @csrf
 
                 <!-- Pilih Karyawan -->
@@ -39,17 +40,17 @@
                 <!-- Input otomatis -->
                 <div class="mb-3">
                     <label for="nik" class="form-label">NIK</label>
-                    <input type="text" name="nik" id="nik" class="form-control" readonly required>
+                    <input type="text" name="nik" id="nik" class="form-control"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Nama</label>
-                    <input type="text" name="name" id="name" class="form-control" readonly required>
+                    <input type="text" name="name" id="name" class="form-control"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="position" class="form-label">Jabatan</label>
-                    <input type="text" name="position" id="position" class="form-control" readonly required>
+                    <input type="text" name="position" id="position" class="form-control"  required>
                 </div>
 
                 <!-- Form lainnya -->

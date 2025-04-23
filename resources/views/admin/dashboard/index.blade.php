@@ -12,52 +12,63 @@
 
 
     <div class="row">
-        <!-- Data SIM -->
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm" style="background-color: #e6f4ea;"> {{-- Hijau Muda --}}
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Data SIM</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $simExpiringSoon->count() }} SIM</div>
-                            <p class="mb-0 mt-2">Akan Expired ≤ 3 Bulan</p>
-                        </div>
-                        <i class="bx bx-id-card fa-2x text-success"></i>
-                    </div>
+      <!-- Data SIM -->
+<div class="col-lg-4 col-md-6 mb-4">
+    <div class="card h-100 shadow-sm" style="background-color: #e6f4ea;"> {{-- Hijau Muda --}}
+        <div class="card-body d-flex flex-column justify-content-between">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Data SIM</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $simExpiringSoon->count() }} SIM</div>
+                   
                 </div>
+                <i class="bx bx-id-card fa-2x text-success"></i>
+            </div>
+            <div class="mt-3 text-end">
+                <a href="{{ route('datasims.index') }}" class="btn btn-sm btn-success">Lihat Detail</a>
             </div>
         </div>
-    
-        <!-- Data SIO -->
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm" style="background-color: #fff9e6;"> {{-- Kuning Muda --}}
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Data SIO</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $sioExpiringSoon->count() }} SIO</div>
-                            <p class="mb-0 mt-2">Akan Expired ≤ 3 Bulan</p>
-                        </div>
-                        <i class="bx bx-shield fa-2x text-warning"></i>
-                    </div>
+    </div>
+</div>
+
+<!-- Data SIO -->
+<div class="col-lg-4 col-md-6 mb-4">
+    <div class="card h-100 shadow-sm" style="background-color: #fff9e6;"> {{-- Kuning Muda --}}
+        <div class="card-body d-flex flex-column justify-content-between">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Data SIO</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $sioExpiringSoon->count() }} SIO</div>
+                   
                 </div>
+                <i class="bx bx-shield fa-2x text-warning"></i>
+            </div>
+            <div class="mt-3 text-end">
+                <a href="{{ route('datasios.index') }}" class="btn btn-sm btn-warning text-dark">Lihat Detail</a>
             </div>
         </div>
-    
-        <!-- Data SIR -->
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm" style="background-color: #ffecec;"> {{-- Merah Muda --}}
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Data SIR</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $sirExpiringSoon->count() }} SIR</div>
-                        </div>
-                        <i class="bx bx-bookmark fa-2x text-danger"></i>
-                    </div>
+    </div>
+</div>
+
+<!-- Data SIR -->
+<div class="col-lg-4 col-md-6 mb-4">
+    <div class="card h-100 shadow-sm" style="background-color: #ffecec;"> {{-- Merah Muda --}}
+        <div class="card-body d-flex flex-column justify-content-between">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Data SIR</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $sirExpiringSoon->count() }} SIR</div>
+                    
                 </div>
+                <i class="bx bx-bookmark fa-2x text-danger"></i>
+            </div>
+            <div class="mt-3 text-end">
+                <a href="{{ route('datasirs.index') }}" class="btn btn-sm btn-danger">Lihat Detail</a>
             </div>
         </div>
+    </div>
+</div>
+
     </div>
     
 

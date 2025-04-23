@@ -21,6 +21,6 @@ class RoleSeeder extends Seeder
         $super_admin->givePermissionTo(Permission::all());
 
         // Memberikan permission tertentu kepada role operator
-        $admin->givePermissionTo(['show users', 'add users', 'edit users']);
+        $admin->givePermissionTo(['show users', 'add datasims', 'edit datasims', 'delete datasims','show datasims','add datasirs', 'edit datasirs', 'delete datasirs','show datasirs', 'add datasios', 'edit datasios', 'delete datasios','show datasios']);
     }
 }

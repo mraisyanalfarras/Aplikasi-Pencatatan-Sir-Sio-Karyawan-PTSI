@@ -17,7 +17,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('datasirs.store') }}" method="POST">
+            <form action="{{ route('datasirs.store') }}" method="POST" enctype="multipart/form-data">>
                 @csrf
 
                 <div class="mb-3">
@@ -37,17 +37,17 @@
 
                 <div class="mb-3">
                     <label for="nik" class="form-label">NIK</label>
-                    <input type="text" name="nik" id="nik" class="form-control" readonly required>
+                    <input type="text" name="nik" id="nik" class="form-control"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="nama" class="form-label">Nama</label>
-                    <input type="text" name="nama" id="nama" class="form-control" readonly required>
+                    <input type="text" name="nama" id="nama" class="form-control"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="position" class="form-label">Jabatan</label>
-                    <input type="text" name="position" id="position" class="form-control" readonly required>
+                    <input type="text" name="position" id="position" class="form-control"  required>
                 </div>
 
                 <div class="mb-3">

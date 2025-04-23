@@ -5,7 +5,12 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold">Data SIM</h2>
         <div>
-            <a href="{{ route('datasims.create') }}" class="btn btn-primary shadow-sm me-2">Tambah SIM</a>
+            @can('add datasims')
+                 <a href="{{ route('datasims.create') }}" class="btn btn-primary shadow-sm me-2">
+                <i class="bi bi-plus-circle me-1"></i> Tambah SIM
+                 </a>
+            @endcan
+        
             <a href="{{ route('datasims.exportPdf') }}" target="_blank" class="btn btn-danger shadow-sm">
                 <i class="fa fa-file-pdf"></i> Cetak PDF
             </a>
@@ -76,15 +81,29 @@
                             <td>{{ $sim->type_sim }}</td>
                             <td>{{ $sim->location }}</td>
                             <td>{{ \Carbon\Carbon::parse($sim->expire_date)->format('d M Y') }}</td>
+                            @php
+                                $expireDate = \Carbon\Carbon::parse($sim->expire_date);
+                                $now = \Carbon\Carbon::now();
+                                $diffInDays = $now->diffInDays($expireDate, false);
+
+                                if ($diffInDays <= 0) {
+                                    $reminderText = 'Expired';
+                                    $color = 'danger';
+                                } elseif ($diffInDays <= 30) {
+                                    $reminderText = "Dalam $diffInDays hari";
+                                    $color = 'danger';
+                                } elseif ($diffInDays <= 90) {
+                                    $reminderText = "Dalam " . $expireDate->diffForHumans($now, ['parts' => 2, 'short' => true]);
+                                    $color = 'warning';
+                                } else {
+                                    $reminderText = "Masih lama";
+                                    $color = 'success';
+                                }
+                            @endphp
                             <td>
-                                @if($sim->reminder)
-                                    <span class="badge bg-warning text-dark">
-                                        {{ \Carbon\Carbon::parse($sim->reminder)->format('d M Y') }}<br>
-                                        <small>({{ \Carbon\Carbon::parse($sim->reminder)->diffForHumans() }})</small>
-                                    </span>
-                                @else
-                                    <span class="text-muted">-</span>
-                                @endif
+                                <span class="badge bg-{{ $color }}">
+                                    {{ $reminderText }}
+                                </span>
                             </td>
                             <td>
                                 @php
@@ -103,13 +122,21 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center gap-1 flex-wrap">
-                                    <a href="{{ route('datasims.show', $sim->id) }}" class="btn btn-sm btn-info">Lihat</a>
-                                    <a href="{{ route('datasims.edit', $sim->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                    <form action="{{ route('datasims.destroy', $sim->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                    </form>
+                                    @can('show datasims')
+                                        <a href="{{ route('datasims.show', $sim->id) }}" class="btn btn-sm btn-info">Lihat</a>
+                                    @endcan
+                                
+                                    @can('edit datasims')
+                                        <a href="{{ route('datasims.edit', $sim->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    @endcan
+                                
+                                    @can('delete datasims')
+                                        <form action="{{ route('datasims.destroy', $sim->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                        </form>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>

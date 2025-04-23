@@ -26,7 +26,8 @@
                 </tr>
                 <tr>
                     <th>Tanggal Expired</th>
-                    <td>{{ $datasir->expire_date->format('d-m-Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($datasir->expire_date)->format('d-m-Y') }}</td>
+
                 </tr>
                 <tr>
                     <th>Status</th>

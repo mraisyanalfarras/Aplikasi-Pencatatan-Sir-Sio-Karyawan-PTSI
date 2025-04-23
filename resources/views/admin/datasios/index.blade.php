@@ -79,15 +79,29 @@
                             <td>{{ $sio->location }}</td>
                             <td>{{ $sio->class }}</td> {{-- ✅ Data kelas --}}
                             <td>{{ \Carbon\Carbon::parse($sio->expire_date)->format('d M Y') }}</td>
+                            @php
+                                $expireDate = \Carbon\Carbon::parse($sio->expire_date);
+                                $now = \Carbon\Carbon::now();
+                                $diffInDays = $now->diffInDays($expireDate, false);
+
+                                if ($diffInDays <= 0) {
+                                    $reminderText = 'Expired';
+                                    $color = 'danger';
+                                } elseif ($diffInDays <= 30) {
+                                    $reminderText = "Dalam $diffInDays hari";
+                                    $color = 'danger';
+                                } elseif ($diffInDays <= 90) {
+                                    $reminderText = "Dalam " . $expireDate->diffForHumans($now, ['parts' => 2, 'short' => true]);
+                                    $color = 'warning';
+                                } else {
+                                    $reminderText = "Masih lama";
+                                    $color = 'success';
+                                }
+                            @endphp
                             <td>
-                                @if($sio->reminder)
-                                    <span class="badge bg-warning text-dark">
-                                        {{ \Carbon\Carbon::parse($sio->reminder)->format('d M Y') }}<br>
-                                        <small>({{ \Carbon\Carbon::parse($sio->reminder)->diffForHumans() }})</small>
-                                    </span>
-                                @else
-                                    <span class="text-muted">-</span>
-                                @endif
+                                <span class="badge bg-{{ $color }}">
+                                    {{ $reminderText }}
+                                </span>
                             </td>
                             <td>
                                 @php
