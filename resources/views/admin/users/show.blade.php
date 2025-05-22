@@ -62,6 +62,51 @@
                             <td>{{ $user->created_at->format('d M Y, H:i') }}</td>
                         </tr>
                     </tbody>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <h5 class="fw-bold text-primary">Gambar Dokumen Pengguna</h5>
+                            <div class="row">
+                                @foreach($user->datasims as $sim)
+                                    @if($sim->foto_sim)
+                                    <div class="col-md-3 mb-3">
+                                        <div class="card shadow-sm">
+                                            <img src="{{ asset('storage/' . $sim->foto_sim) }}" class="card-img-top img-fluid" alt="Foto SIM">
+                                            <div class="card-body text-center">
+                                                <small class="text-muted">Foto SIM</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
+
+                                @foreach($user->datasios as $sio)
+                                    @if($sio->foto_sio)
+                                    <div class="col-md-3 mb-3">
+                                        <div class="card shadow-sm">
+                                            <img src="{{ asset('storage/' . $sio->foto_sio) }}" class="card-img-top img-fluid" alt="Foto SIO">
+                                            <div class="card-body text-center">
+                                                <small class="text-muted">Foto SIO</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
+
+                                @foreach($user->dataSirs as $sir)
+                                    @if($sir->foto_sir)
+                                    <div class="col-md-3 mb-3">
+                                        <div class="card shadow-sm">
+                                            <img src="{{ asset('storage/' . $sir->foto_sir) }}" class="card-img-top img-fluid" alt="Foto SIR">
+                                            <div class="card-body text-center">
+                                                <small class="text-muted">Foto SIR</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                 </table>
             </div>
         </div>

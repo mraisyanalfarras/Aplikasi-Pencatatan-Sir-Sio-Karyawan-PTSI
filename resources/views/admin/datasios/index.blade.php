@@ -6,9 +6,10 @@
         <h2 class="fw-bold">Data SIO</h2>
         <div>
             <a href="{{ route('datasios.create') }}" class="btn btn-primary shadow-sm me-2">Tambah SIO</a>
-            {{-- <a href="{{ route('datasios.exportPdf') }}" target="_blank" class="btn btn-danger shadow-sm">
-                <i class="fa fa-file-pdf"></i> Cetak PDF
-            </a> --}}
+            <a href="{{ route('export.sio') }}" class="btn btn-success mb-3">
+                <i class="fas fa-file-excel me-1"></i> Export SIO Excel
+            </a>
+            
         </div>
     </div>
 
@@ -58,7 +59,7 @@
                             <th>No SIO</th>
                             <th>Tipe</th>
                             <th>Lokasi</th>
-                            <th>Kelas</th> {{-- ✅ Kolom baru --}}
+                            <th>Kelas</th>
                             <th>Expired</th>
                             <th>Reminder</th>
                             <th>Status</th>
@@ -77,7 +78,7 @@
                             <td>{{ $sio->no_sio }}</td>
                             <td>{{ $sio->type_sio }}</td>
                             <td>{{ $sio->location }}</td>
-                            <td>{{ $sio->class }}</td> {{-- ✅ Data kelas --}}
+                            <td>{{ $sio->class }}</td>
                             <td>{{ \Carbon\Carbon::parse($sio->expire_date)->format('d M Y') }}</td>
                             @php
                                 $expireDate = \Carbon\Carbon::parse($sio->expire_date);

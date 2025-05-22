@@ -11,9 +11,9 @@
                  </a>
             @endcan
         
-            <a href="{{ route('datasims.exportPdf') }}" target="_blank" class="btn btn-danger shadow-sm">
-                <i class="fa fa-file-pdf"></i> Cetak PDF
-            </a>
+            <a href="{{ route('export.sim') }}" class="btn btn-success mb-3">
+                <i class="fas fa-file-excel me-1"></i> Export Excel
+            </a>            
         </div>
     </div>
 
@@ -44,6 +44,20 @@
             <button class="btn btn-secondary me-2">Filter</button>
             <a href="{{ route('datasims.index') }}" class="btn btn-outline-secondary">Reset</a>
         </div>
+        <div class="col-md-2">
+            <select name="sort_by" class="form-select">
+                <option value="reminder" {{ request('sort_by') == 'reminder' ? 'selected' : '' }}>Urut Reminder</option>
+                <option value="expire_date" {{ request('sort_by') == 'expire_date' ? 'selected' : '' }}>Urut Expired</option>
+                <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Urut Nama</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="sort_dir" class="form-select">
+                <option value="asc" {{ request('sort_dir') == 'asc' ? 'selected' : '' }}>Naik (ASC)</option>
+                <option value="desc" {{ request('sort_dir') == 'desc' ? 'selected' : '' }}>Turun (DESC)</option>
+            </select>
+        </div>
+        
     </form>
 
     {{-- TABEL --}}
@@ -151,10 +165,9 @@
         </div>
     </div>
 
-    @if(method_exists($datasims, 'links'))
-    <div class="d-flex justify-content-center mt-3">
-        {{ $datasims->appends(request()->query())->links() }}
+    <div class="d-flex justify-content-end mt-3">
+        {{ $datasims->appends(request()->query())->links('pagination::bootstrap-5') }}
     </div>
-    @endif
+    
 </div>
 @endsection

@@ -42,14 +42,13 @@ class DataSimController extends Controller
         $query->where('expire_date', '<=', $request->expire_end);
     }
 
-    $datasims = $query->orderBy('expire_date', 'asc')->paginate(10);
+           // Sorting
+    $sortBy = $request->get('sort_by', 'reminder'); // default: reminder
+    $sortDir = $request->get('sort_dir', 'asc'); // default: asc
 
+    $datasims = $query->orderBy($sortBy, $sortDir)->paginate(10)->appends($request->query());
 
-        $datasims = $query->orderBy('reminder')->paginate(10);
-
-
-
-        return view('admin.datasims.index', compact('datasims'));
+    return view('admin.datasims.index', compact('datasims'));
     }
 
     public function create()

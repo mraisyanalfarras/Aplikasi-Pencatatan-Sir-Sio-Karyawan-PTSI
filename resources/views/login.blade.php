@@ -121,7 +121,7 @@
 
 <body>
   <div class="login-wrapper">
-    <img src="../assets/img/backgrounds/kacamata.png" alt="PTSI Logo">
+    <img src="../assets/img/backgrounds/b95c28e4-2137-4669-a8a8-52b5845457c4.jpg" alt="PTSI Logo">
     <h4>Login</h4>
     <p>Selamat Datang di <strong>PTSI Work Place Training</strong></p>
     <p>Silakan masuk ke akun Anda</p>
@@ -164,7 +164,7 @@
     </form>
 
     <div class="footer-text">
-      &copy; 2025 Farma Optical — Dibuat dengan ❤️ oleh Tim Pengembang
+      &copy; 2025 Prima Transportasi Servis Indonesia — Dibuat dengan ❤️ oleh Tim Pengembang
     </div>
   </div>
 

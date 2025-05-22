@@ -1,33 +1,37 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AttendanceController;
+use App\Models\User;
+use App\Mail\TestMail;
+use App\Exports\DataSimExport;
+use App\Exports\DataSioExport;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\EmailController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\LeaveController;
-use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\DashboardController; // pastikan ini di bagian atas
-use App\Http\Controllers\ProfileController;
-use App\Mail\TestMail;
-use Illuminate\Support\Facades\Mail;
-use App\Models\User;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PromotionController;
-use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\FrameController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\LensaController;
+use App\Http\Controllers\PasienController;
 use App\Http\Controllers\DatasimController;
 use App\Http\Controllers\DatasioController;
 use App\Http\Controllers\DatasirController;
-use App\Http\Controllers\FrameController;
-use App\Http\Controllers\LensaController;
-use App\Http\Controllers\PasienController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\SendPromotionController;
-use Illuminate\Http\Client\Request;
+use App\Http\Controllers\ExpiredDocumentController;
+use App\Http\Controllers\DashboardController; // pastikan ini di bagian atas
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +67,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
+Route::get('/dashboard/expired', [DashboardController::class, 'expiredList'])->name('expired.documents');
 
 
 Route::get('/get-user-data', [UserController::class, 'getUserData'])->name('get.user.data');
@@ -101,10 +106,22 @@ Route::get('/api/users/search', function (Request $request) {
     Route::resource('datasios', DatasioController::class);
     Route::resource('datasirs', DatasirController::class);
     Route::resource('datasims', DatasimController::class);
+    Route::get('/datasims/{id}', [DataSimController::class, 'show'])->name('datasim.show');
+Route::get('/datasios/{id}', [DataSioController::class, 'show'])->name('datasio.show');
+Route::get('/datasirs/{id}', [DataSirController::class, 'show'])->name('datasir.show');
+
     Route::get('/datasims/print', [App\Http\Controllers\DataSimController::class, 'print'])->name('datasims.print');
     Route::get('/datasims/export-pdf', [DataSimController::class, 'exportPdf'])->name('datasims.exportPdf');
 
 
+
+Route::get('/export/sim', function () {
+    return Excel::download(new DataSimExport, 'data_sim.xlsx');
+})->name('export.sim');
+
+Route::get('/export/sio', function () {
+    return Excel::download(new DataSioExport, 'data_sio.xlsx');
+})->name('export.sio');
 
     Route::resource('send-promotions', SendPromotionController::class);
     Route::get('send-all-promotions', [EmailController::class, 'sendPromotionEmails'])->name('send.all.promotions');

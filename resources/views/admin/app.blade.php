@@ -3,18 +3,22 @@
       data-theme="theme-default" 
       data-assets-path="{{ asset('assets/') }}" 
       data-template="vertical-menu-template-free">
+      
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Aplikasi Data SIR, SIO, SIM Karyawan</title>
+    <title>Aplikasi Manajaemen License Operator dan Rigger Di Departeman crane PTSI Berbasis Web</title>
     <meta name="description" content="Sistem manajemen karyawan terintegrasi" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 
 
@@ -88,7 +92,7 @@
                     <li class="menu-item">
                         <a href="#" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-user-voice"></i>
-                            <div data-i18n="Menu CRM">Training Management</div>
+                            <div data-i18n="Menu CRM">License Management</div>
                         </a>
                         <ul class="menu-sub">
                             @can('show datasios')
@@ -246,7 +250,7 @@
                         <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
                             <div class="mb-2 mb-md-0">
                                 © <script>document.write(new Date().getFullYear());</script>
-                                Sistem Informasi Farma Optical - Dibuat dengan <i class='bx bxs-heart' style='color:#ff0000'></i> oleh
+                                Aplikasi Manajemen License Operator dan Rigger - Dibuat dengan <i class='bx bxs-heart' style='color:#ff0000'></i> oleh
                                 <a href="#" target="_blank" class="footer-link fw-bolder">Tim Pengembang</a>
                             </div>
                         </div>
@@ -266,6 +270,15 @@
 
     <!-- Include your custom scripts here -->
     @include('admin.scripts.script')
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 700,
+        easing: 'ease-in-out',
+        once: true
+    });
+</script>
+
 
 </body>
 </html>

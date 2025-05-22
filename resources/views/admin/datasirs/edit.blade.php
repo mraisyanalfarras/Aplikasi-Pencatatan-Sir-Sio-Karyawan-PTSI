@@ -17,7 +17,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('datasirs.update', $datasir->id) }}" method="POST">
+            <form action="{{ route('datasirs.update', $datasir->id) }}" method="POST" enctype="multipart/form-data">>
                 @csrf
                 @method('PUT')
 

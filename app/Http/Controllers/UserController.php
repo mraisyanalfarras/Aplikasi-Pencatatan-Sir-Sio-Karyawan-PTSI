@@ -14,12 +14,13 @@ class UserController extends Controller
         $query = User::with('roles');
 
        // Pencarian berdasarkan nama atau NIK
-    if ($request->filled('search')) {
-        $search = $request->search;
-        $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', '%' . $search . '%')
-              ->orWhere('nik', 'like', '%' . $search . '%');
-        });
+           // Search by name or NIK
+           if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                ->orWhere('nik', 'like', '%' . $search . '%');
+            });
     }
        
 
@@ -72,7 +73,10 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return view('admin.users.show', compact('user'));
+    
+    $user->load(['datasios', 'datasims', 'dataSirs']);
+    return view('admin.users.show', compact('user'));
+
     }
 
     public function edit(User $user)

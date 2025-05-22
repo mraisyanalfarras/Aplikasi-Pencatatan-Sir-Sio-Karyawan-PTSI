@@ -17,7 +17,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('datasios.update', $dataSio->id) }}" method="POST">
+            <form action="{{ route('datasios.update', $datasio->id) }}" method="POST"enctype="multipart/form-data">>
                 @csrf
                 @method('PUT')
 
@@ -31,7 +31,7 @@
                                     data-nik="{{ $user->nik }}" 
                                     data-name="{{ $user->name }}" 
                                     data-position="{{ $user->position }}"
-                                    {{ $user->id == $dataSio->user_id ? 'selected' : '' }}>
+                                    {{ $user->id == $datasio->user_id ? 'selected' : '' }}>
                                 {{ $user->name }} - {{ $user->nik }}
                             </option>
                         @endforeach
@@ -41,52 +41,52 @@
                 <!-- Input otomatis -->
                 <div class="mb-3">
                     <label for="nik" class="form-label">NIK</label>
-                    <input type="text" name="nik" id="nik" class="form-control" value="{{ $dataSio->nik }}" readonly required>
+                    <input type="text" name="nik" id="nik" class="form-control" value="{{ $datasio->nik }}"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Nama</label>
-                    <input type="text" name="name" id="name" class="form-control" value="{{ $dataSio->name }}" readonly required>
+                    <input type="text" name="name" id="name" class="form-control" value="{{ $datasio->name }}"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="position" class="form-label">Jabatan</label>
-                    <input type="text" name="position" id="position" class="form-control" value="{{ $dataSio->position }}" readonly required>
+                    <input type="text" name="position" id="position" class="form-control" value="{{ $datasio->position }}"  required>
                 </div>
 
                 <!-- Form lainnya -->
                 <div class="mb-3">
                     <label for="no_sio" class="form-label">No SIO</label>
-                    <input type="text" name="no_sio" id="no_sio" class="form-control" value="{{ $dataSio->no_sio }}" required>
+                    <input type="text" name="no_sio" id="no_sio" class="form-control" value="{{ $datasio->no_sio }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="type" class="form-label">Jenis</label>
-                    <input type="text" name="type" id="type" class="form-control" value="{{ $dataSio->type }}" required>
+                    <input type="text" name="type_sio" id="type_sio" class="form-control" value="{{ $datasio->type_sio }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="class" class="form-label">Kelas</label>
-                    <input type="text" name="class" id="class" class="form-control" value="{{ $dataSio->class }}" required>
+                    <input type="text" name="class" id="class" class="form-control" value="{{ $datasio->class }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="expire_date" class="form-label">Tanggal Expired</label>
-                    <input type="date" name="expire_date" id="expire_date" class="form-control" value="{{ $dataSio->expire_date }}" required>
+                    <input type="date" name="expire_date" id="expire_date" class="form-control" value="{{ $datasio->expire_date }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
                     <select name="status" id="status" class="form-control" required>
-                        <option value="active" {{ $dataSio->status == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="expired" {{ $dataSio->status == 'expired' ? 'selected' : '' }}>Expired</option>
-                        <option value="pending" {{ $dataSio->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="active" {{ $datasio->status == 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="expired" {{ $datasio->status == 'expired' ? 'selected' : '' }}>Expired</option>
+                        <option value="pending" {{ $datasio->status == 'pending' ? 'selected' : '' }}>Pending</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label for="location" class="form-label">Lokasi</label>
-                    <input type="text" name="location" id="location" class="form-control" value="{{ $dataSio->location }}" required>
+                    <input type="text" name="location" id="location" class="form-control" value="{{ $datasio->location }}" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update</button>

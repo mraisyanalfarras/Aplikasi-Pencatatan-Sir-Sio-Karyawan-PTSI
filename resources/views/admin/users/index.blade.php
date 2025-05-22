@@ -19,17 +19,17 @@
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                             <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                            <buitton type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
                     <div class="mb-3 row">
-                        <label for="search" class="col-md-2 col-form-label">Cari</label>
+                        <label for="search" class="col-md-2 col-form-label fw-semibold">Cari</label>
                         <div class="col-md-8">
-                            <input class="form-control" type="text" placeholder="Cari pengguna..." id="search-input" />
+                            <input class="form-control shadow-sm" type="text" placeholder="Cari berdasarkan NIK, Nama, atau Jabatan..." id="search-input" />
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-primary w-100" id="search-button">
-                                <i class="fas fa-search"></i> Cari
+                                <i class="fas fa-search me-1"></i> Cari
                             </button>
                         </div>
                     </div>
@@ -62,7 +62,11 @@
                                     <td>{{ $user->masuk_jadwal }}</td>
                                     <td>{{ $user->kecelakaan ?? '-' }}</td>
                                     <td>{{ $user->mulai_kerja }}</td>
-                                    <td>{{ $user->roles->pluck('name')->implode(', ') }}</td>
+                                    <td>
+                                        @foreach($user->roles as $role)
+                                            <span class="badge bg-primary">{{ $role->name }}</span>
+                                        @endforeach
+                                    </td>
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-info">Aksi</button>
@@ -111,38 +115,55 @@
         </div>
     </div>
 </div>
+
 @push('scripts')
 <script>
-   $(document).ready(function() {
-    let table = $('#usersTable').DataTable({
-        "paging": true,
-        "ordering": true,
-        "info": true,
-        "lengthChange": false,
-        "language": {
-            "search": "Cari:",
-            "zeroRecords": "Tidak ada data yang ditemukan",
-            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ pengguna",
-            "infoEmpty": "Menampilkan 0 pengguna",
-            "paginate": {
-                "previous": "Sebelumnya",
-                "next": "Berikutnya"
-            }
+    $(document).ready(function() {
+        let table = $('#usersTable').DataTable({
+            paging: true,
+            ordering: true,
+            info: true,
+            lengthChange: false,
+            language: {
+                search: "Cari:",
+                zeroRecords: "Tidak ada data yang ditemukan",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ pengguna",
+                infoEmpty: "Menampilkan 0 pengguna",
+                paginate: {
+                    previous: "Sebelumnya",
+                    next: "Berikutnya"
+                }
+            },
+            columnDefs: [
+                { targets: [0], searchable: false }
+            ]
+        });
+
+        function filterTable() {
+            let searchText = $('#search-input').val().toLowerCase();
+            table.rows().every(function() {
+                let nik = this.data()[1].toLowerCase();
+                let nama = this.data()[2].toLowerCase();
+                let jabatan = this.data()[5].toLowerCase();
+
+                if (nik.includes(searchText) || nama.includes(searchText) || jabatan.includes(searchText)) {
+                    $(this.node()).show();
+                } else {
+                    $(this.node()).hide();
+                }
+            });
         }
-    });
-    function filterTable() {
-        let searchText = $('#search-input').val();
-        table.search(searchText).draw();
-    }
-    $('#search-button').on('click', function() {
-        filterTable();
-    });
-    $('#search-input').on('keypress', function(event) {
-        if (event.key === "Enter") {
+
+        $('#search-button').on('click', function() {
             filterTable();
-        }
+        });
+
+        $('#search-input').on('keypress', function(event) {
+            if (event.key === "Enter") {
+                filterTable();
+            }
+        });
     });
-});
 </script>
 @endpush
 @endsection
