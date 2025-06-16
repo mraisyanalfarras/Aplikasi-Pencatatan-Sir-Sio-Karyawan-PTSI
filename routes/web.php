@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Mail\TestMail;
 use App\Exports\DataSimExport;
 use App\Exports\DataSioExport;
+use App\Exports\DataSirExport;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -122,6 +123,10 @@ Route::get('/export/sim', function () {
 Route::get('/export/sio', function () {
     return Excel::download(new DataSioExport, 'data_sio.xlsx');
 })->name('export.sio');
+
+Route::get('/export/sir', function () {
+    return Excel::download(new DataSirExport, 'data_sir.xlsx');
+})->name('export.sir');
 
     Route::resource('send-promotions', SendPromotionController::class);
     Route::get('send-all-promotions', [EmailController::class, 'sendPromotionEmails'])->name('send.all.promotions');

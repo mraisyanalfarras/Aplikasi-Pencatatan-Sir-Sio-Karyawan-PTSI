@@ -33,7 +33,13 @@ class DataSioController extends Controller
                 ->orWhere('nik', 'like', '%' . $search . '%');
             });
         }
-        $datasios = $query->orderBy('reminder')->paginate(10);
+
+              // Sorting
+    $sortBy = $request->get('sort_by', 'reminder'); // default: reminder
+    $sortDir = $request->get('sort_dir', 'asc'); // default: asc
+
+   $datasios = $query->orderBy($sortBy, $sortDir)->paginate(10)->appends($request->query());
+        
 
         return view('admin.datasios.index', compact('datasios'));
     }

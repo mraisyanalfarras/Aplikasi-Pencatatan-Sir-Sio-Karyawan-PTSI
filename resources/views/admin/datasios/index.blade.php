@@ -4,13 +4,16 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold">Data SIO</h2>
-        <div>
-            <a href="{{ route('datasios.create') }}" class="btn btn-primary shadow-sm me-2">Tambah SIO</a>
-            <a href="{{ route('export.sio') }}" class="btn btn-success mb-3">
-                <i class="fas fa-file-excel me-1"></i> Export SIO Excel
-            </a>
             
-        </div>
+             <div class="d-flex gap-2">
+            @can('add datasios')
+            <a href="{{ route('datasios.create') }}" class="btn btn-primary shadow-sm">Tambah SIO</a>
+            @endcan
+             <a href="{{ route('export.sim') }}" class="btn btn-success shadow-sm">
+                <i class="fas fa-file-excel me-1"></i> Export Excel
+            </a>
+            </div>
+    
     </div>
 
     @if(session('success'))
@@ -30,19 +33,29 @@
                 <option value="revoked" {{ request('status') == 'revoked' ? 'selected' : '' }}>Revoked</option>
             </select>
         </div>
-        <div class="col-md-2">
-            <input type="date" name="expire_start" class="form-control" value="{{ request('expire_start') }}">
+
+         <div class="col-md-2">
+            <select name="sort_by" class="form-select">
+                <option value="reminder" {{ request('sort_by') == 'reminder' ? 'selected' : '' }}>Urut Reminder</option>
+                <option value="expire_date" {{ request('sort_by') == 'expire_date' ? 'selected' : '' }}>Urut Expired</option>
+                <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Urut Nama</option>
+            </select>
         </div>
         <div class="col-md-2">
-            <input type="date" name="expire_end" class="form-control" value="{{ request('expire_end') }}">
+            <select name="sort_dir" class="form-select">
+                <option value="asc" {{ request('sort_dir') == 'asc' ? 'selected' : '' }}>Naik (ASC)</option>
+                <option value="desc" {{ request('sort_dir') == 'desc' ? 'selected' : '' }}>Turun (DESC)</option>
+            </select>
         </div>
+        
+       
         <div class="col-md-3 d-flex justify-content-end">
             <button class="btn btn-secondary me-2">Filter</button>
             <a href="{{ route('datasios.index') }}" class="btn btn-outline-secondary">Reset</a>
         </div>
     </form>
+    
 
-    {{-- TABEL --}}
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
             <strong>Daftar Data SIO</strong>
@@ -67,7 +80,6 @@
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    
                     <tbody>
                         @forelse($datasios as $key => $sio)
                         <tr>
@@ -80,6 +92,7 @@
                             <td>{{ $sio->location }}</td>
                             <td>{{ $sio->class }}</td>
                             <td>{{ \Carbon\Carbon::parse($sio->expire_date)->format('d M Y') }}</td>
+
                             @php
                                 $expireDate = \Carbon\Carbon::parse($sio->expire_date);
                                 $now = \Carbon\Carbon::now();
@@ -100,18 +113,20 @@
                                 }
                             @endphp
                             <td>
-                                <span class="badge bg-{{ $color }}">
-                                    {{ $reminderText }}
-                                </span>
+                                <span class="badge bg-{{ $color }}">{{ $reminderText }}</span>
                             </td>
+
+                            @php
+                                $statusColors = ['active' => 'success', 'expired' => 'danger', 'revoked' => 'secondary'];
+                                $isExpired = $expireDate->isPast();
+                                $currentStatus = $isExpired ? 'expired' : $sio->status;
+                            @endphp
                             <td>
-                                @php
-                                    $statusColors = ['active' => 'success', 'expired' => 'danger', 'revoked' => 'secondary'];
-                                @endphp
-                                <span class="badge bg-{{ $statusColors[$sio->status] ?? 'secondary' }}">
-                                    {{ strtoupper($sio->status) }}
+                                <span class="badge bg-{{ $statusColors[$currentStatus] ?? 'secondary' }}">
+                                    {{ strtoupper($currentStatus) }}
                                 </span>
                             </td>
+
                             <td>
                                 @if($sio->foto)
                                     <img src="{{ asset('storage/' . $sio->foto) }}" alt="Foto SIO" width="50">
@@ -133,7 +148,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="12" class="text-center">Tidak ada data SIO.</td>
+                            <td colspan="13" class="text-center">Tidak ada data SIO.</td>
                         </tr>
                         @endforelse
                     </tbody>

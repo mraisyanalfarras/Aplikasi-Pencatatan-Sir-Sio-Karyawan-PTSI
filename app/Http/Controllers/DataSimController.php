@@ -15,6 +15,10 @@ class DataSimController extends Controller
     {
         $query = DataSim::query();
 
+         DataSim::where('expire_date', '<', now())
+        ->where('status', 'active')
+        ->update(['status' => 'expired']);
+
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }

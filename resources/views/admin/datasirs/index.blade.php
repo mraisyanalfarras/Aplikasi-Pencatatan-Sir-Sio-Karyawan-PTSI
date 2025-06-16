@@ -5,10 +5,16 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold">Data SIR</h2>
         <div>
-           {{-- Tombol Tambah --}}
+            <div class="d-flex gap-2">
             @can('add datasirs')
-            <a href="{{ route('datasirs.create') }}" class="btn btn-primary shadow-sm me-2">Tambah SIR</a>
+            <a href="{{ route('datasirs.create') }}" class="btn btn-primary shadow-sm">Tambah SIR</a>
             @endcan
+
+            <a href="{{ route('export.sir') }}" class="btn btn-success shadow-sm">
+                <i class="fas fa-file-excel me-1"></i> Export Excel
+            </a>
+</div>
+
 
             {{-- <a href="{{ route('datasirs.exportPdf') }}" target="_blank" class="btn btn-danger shadow-sm">
                 <i class="fa fa-file-pdf"></i> Cetak PDF
@@ -33,16 +39,26 @@
                 <option value="revoked" {{ request('status') == 'revoked' ? 'selected' : '' }}>Revoked</option>
             </select>
         </div>
-        <div class="col-md-2">
-            <input type="date" name="expire_start" class="form-control" value="{{ request('expire_start') }}">
+          <div class="col-md-2">
+            <select name="sort_by" class="form-select">
+                <option value="reminder" {{ request('sort_by') == 'reminder' ? 'selected' : '' }}>Urut Reminder</option>
+                <option value="expire_date" {{ request('sort_by') == 'expire_date' ? 'selected' : '' }}>Urut Expired</option>
+                <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Urut Nama</option>
+            </select>
         </div>
         <div class="col-md-2">
-            <input type="date" name="expire_end" class="form-control" value="{{ request('expire_end') }}">
+            <select name="sort_dir" class="form-select">
+                <option value="asc" {{ request('sort_dir') == 'asc' ? 'selected' : '' }}>Naik (ASC)</option>
+                <option value="desc" {{ request('sort_dir') == 'desc' ? 'selected' : '' }}>Turun (DESC)</option>
+            </select>
         </div>
-        <div class="col-md-3 d-flex justify-content-end">
+        
+       
+        <div class="col-md-3 d-flex">
             <button class="btn btn-secondary me-2">Filter</button>
             <a href="{{ route('datasirs.index') }}" class="btn btn-outline-secondary">Reset</a>
         </div>
+       
     </form>
 
     {{-- TABEL --}}

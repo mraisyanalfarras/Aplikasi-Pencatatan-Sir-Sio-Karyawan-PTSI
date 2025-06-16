@@ -17,7 +17,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('datasirs.update', $datasir->id) }}" method="POST" enctype="multipart/form-data">>
+            <form action="{{ route('datasirs.update', $datasir->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -26,11 +26,11 @@
                     <select name="user_id" id="user_id" class="form-control" required>
                         <option value="">Pilih Karyawan</option>
                         @foreach($users as $user)
-                            <option value="{{ $user->id }}" 
-                                    data-nik="{{ $user->nik }}" 
-                                    data-nama="{{ $user->name }}" 
-                                    data-position="{{ $user->position }}"
-                                    {{ $datasir->user_id == $user->id ? 'selected' : '' }}>
+                            <option value="{{ $user->id }}"
+                                data-nik="{{ $user->nik }}"
+                                data-nama="{{ $user->name }}"
+                                data-position="{{ $user->position }}"
+                                {{ $datasir->user_id == $user->id ? 'selected' : '' }}>
                                 {{ $user->name }} - {{ $user->nik }}
                             </option>
                         @endforeach
@@ -39,17 +39,17 @@
 
                 <div class="mb-3">
                     <label for="nik" class="form-label">NIK</label>
-                    <input type="text" name="nik" id="nik" class="form-control" value="{{ $datasir->nik }}" readonly required>
+                    <input type="text" name="nik" id="nik" class="form-control" value="{{ $datasir->nik }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="nama" class="form-label">Nama</label>
-                    <input type="text" name="nama" id="nama" class="form-control" value="{{ $datasir->nama }}" readonly required>
+                    <input type="text" name="nama" id="nama" class="form-control" value="{{ $datasir->nama }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="position" class="form-label">Jabatan</label>
-                    <input type="text" name="position" id="position" class="form-control" value="{{ $datasir->position }}" readonly required>
+                    <input type="text" name="position" id="position" class="form-control" value="{{ $datasir->position }}" required>
                 </div>
 
                 <div class="mb-3">
@@ -59,7 +59,7 @@
 
                 <div class="mb-3">
                     <label for="expire_date" class="form-label">Tanggal Expired</label>
-                    <input type="date" name="expire_date" id="expire_date" class="form-control" value="{{ $datasir->expire_date->format('Y-m-d') }}" required>
+                    <input type="date" name="expire_date" id="expire_date" class="form-control" value="{{ $datasir->expire_date }}" required>
                 </div>
 
                 <div class="mb-3">
@@ -76,7 +76,15 @@
                     <input type="text" name="location" id="location" class="form-control" value="{{ $datasir->location }}" required>
                 </div>
 
-                <button type="submit" class="btn btn-success">Update</button>
+                <div class="mb-3">
+                    <label for="foto" class="form-label">Upload Foto SIM (Opsional)</label><br>
+                    @if ($datasir->foto)
+                        <img src="{{ asset('storage/' . $datasir->foto) }}" alt="Foto" width="100" class="mb-2">
+                    @endif
+                    <input type="file" name="foto" id="foto" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
     </div>
@@ -91,5 +99,4 @@
         document.getElementById('position').value = selectedOption.getAttribute('data-position') || '';
     });
 </script>
-
 @endsection

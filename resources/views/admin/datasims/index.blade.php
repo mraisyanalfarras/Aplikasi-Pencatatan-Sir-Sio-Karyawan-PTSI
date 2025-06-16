@@ -4,17 +4,14 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold">Data SIM</h2>
-        <div>
+          <div class="d-flex gap-2">
             @can('add datasims')
-                 <a href="{{ route('datasims.create') }}" class="btn btn-primary shadow-sm me-2">
-                <i class="bi bi-plus-circle me-1"></i> Tambah SIM
-                 </a>
+            <a href="{{ route('datasims.create') }}" class="btn btn-primary shadow-sm">Tambah SIM</a>
             @endcan
-        
-            <a href="{{ route('export.sim') }}" class="btn btn-success mb-3">
+             <a href="{{ route('export.sim') }}" class="btn btn-success shadow-sm">
                 <i class="fas fa-file-excel me-1"></i> Export Excel
-            </a>            
-        </div>
+            </a>
+            </div>
     </div>
 
     @if(session('success'))
@@ -34,17 +31,8 @@
                 <option value="revoked" {{ request('status') == 'revoked' ? 'selected' : '' }}>Revoked</option>
             </select>
         </div>
-        <div class="col-md-2">
-            <input type="date" name="expire_start" class="form-control" value="{{ request('expire_start') }}">
-        </div>
-        <div class="col-md-2">
-            <input type="date" name="expire_end" class="form-control" value="{{ request('expire_end') }}">
-        </div>
-        <div class="col-md-3 d-flex justify-content-end">
-            <button class="btn btn-secondary me-2">Filter</button>
-            <a href="{{ route('datasims.index') }}" class="btn btn-outline-secondary">Reset</a>
-        </div>
-        <div class="col-md-2">
+
+         <div class="col-md-2">
             <select name="sort_by" class="form-select">
                 <option value="reminder" {{ request('sort_by') == 'reminder' ? 'selected' : '' }}>Urut Reminder</option>
                 <option value="expire_date" {{ request('sort_by') == 'expire_date' ? 'selected' : '' }}>Urut Expired</option>
@@ -58,6 +46,12 @@
             </select>
         </div>
         
+       
+        <div class="col-md-3 d-flex justify-content-end">
+            <button class="btn btn-secondary me-2">Filter</button>
+            <a href="{{ route('datasims.index') }}" class="btn btn-outline-secondary">Reset</a>
+        </div>
+       
     </form>
 
     {{-- TABEL --}}
