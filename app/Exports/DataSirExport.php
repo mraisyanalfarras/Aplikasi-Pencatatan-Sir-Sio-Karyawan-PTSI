@@ -21,7 +21,7 @@ class DataSirExport implements FromCollection, WithHeadings
             'status',
             'reminder',
             'location',
-            'created_at'
+
         )->get();
     }
 
@@ -37,7 +37,7 @@ class DataSirExport implements FromCollection, WithHeadings
             'Status',
             'Reminder',
             'Lokasi',
-            'Tanggal Dibuat'
+        
         ];
     }
 }

@@ -9,7 +9,7 @@
             @can('add datasios')
             <a href="{{ route('datasios.create') }}" class="btn btn-primary shadow-sm">Tambah SIO</a>
             @endcan
-             <a href="{{ route('export.sim') }}" class="btn btn-success shadow-sm">
+             <a href="{{ route('export.sio') }}" class="btn btn-success shadow-sm">
                 <i class="fas fa-file-excel me-1"></i> Export Excel
             </a>
             </div>
@@ -38,7 +38,7 @@
             <select name="sort_by" class="form-select">
                 <option value="reminder" {{ request('sort_by') == 'reminder' ? 'selected' : '' }}>Urut Reminder</option>
                 <option value="expire_date" {{ request('sort_by') == 'expire_date' ? 'selected' : '' }}>Urut Expired</option>
-                <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Urut Nama</option>
+                {{-- <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Urut Nama</option> --}}
             </select>
         </div>
         <div class="col-md-2">

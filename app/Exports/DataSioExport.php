@@ -13,7 +13,7 @@ class DataSioExport implements FromCollection, WithHeadings
         return DataSio::select([
             'nik', 'name', 'position', 'no_sio',
             'type_sio', 'class', 'expire_date', 'status', 'reminder',
-            'location', 'foto', 'created_at', 'updated_at'
+            'location', 
         ])->get();
     }
 
@@ -22,7 +22,7 @@ class DataSioExport implements FromCollection, WithHeadings
         return [
             'NIK', 'Nama', 'Posisi', 'No SIO',
             'Tipe SIO', 'Kelas', 'Tanggal Expired', 'Status',
-            'Reminder', 'Lokasi', 'Foto', 'Dibuat Pada', 'Diperbarui Pada'
+            'Reminder', 'Lokasi', 
         ];
     }
 }

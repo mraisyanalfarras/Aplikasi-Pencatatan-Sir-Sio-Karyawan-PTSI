@@ -134,7 +134,7 @@
                     <li class="menu-item">
                         <a href="#" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-cog"></i>
-                            <div data-i18n="Menu Pengaturan">Human Department</div>
+                            <div data-i18n="Menu Pengaturan">User Management</div>
                         </a>
                         <ul class="menu-sub">
                             @can('show users')

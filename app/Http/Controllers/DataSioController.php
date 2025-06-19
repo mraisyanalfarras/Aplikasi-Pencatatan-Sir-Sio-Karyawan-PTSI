@@ -13,6 +13,11 @@ class DataSioController extends Controller
 {
     public function index(Request $request)
     {
+        // ⏳ Update otomatis status expired
+    DataSio::where('expire_date', '<', now())
+        ->where('status', 'active')
+        ->update(['status' => 'expired']);
+        
         $query = DataSio::query();
 
         if ($request->filled('status')) {

@@ -13,6 +13,11 @@ class DataSirController extends Controller
 {
     public function index(Request $request)
     {
+        // Otomatis ubah status menjadi expired jika lewat tanggal
+        DataSir::where('expire_date', '<', now())
+            ->where('status', 'active')
+            ->update(['status' => 'expired']);
+
         $query = DataSir::query();
 
         if ($request->filled('status')) {

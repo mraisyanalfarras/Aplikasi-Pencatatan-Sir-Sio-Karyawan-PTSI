@@ -21,7 +21,7 @@ class DataSimExport implements FromCollection, WithHeadings
         return [
             'NIK', 'Nama', 'No SIM', 'Posisi',
             'Tipe SIM', 'Lokasi', 'Tanggal Expired', 'Reminder', 'Status', 
-            'Dibuat Pada', 'Diperbarui Pada'
+            'Dibuat Pada', ' '
         ];
     }
 }
