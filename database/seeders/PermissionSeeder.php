@@ -45,12 +45,6 @@ class PermissionSeeder extends Seeder
         Permission::updateOrCreate(['name' => 'edit datasirs']);
         Permission::updateOrCreate(['name' => 'delete datasirs']);
 
-        // Permission untuk mengelola presence
-        Permission::updateOrCreate(['name' => 'show attendances']);
-        Permission::updateOrCreate(['name' => 'add attendances']);
-        Permission::updateOrCreate(['name' => 'edit attendances']);
-        Permission::updateOrCreate(['name' => 'delete attendances']);
-
         
         // Permission tambahan
         Permission::updateOrCreate(['name' => 'manage-hr']);

@@ -6,7 +6,6 @@ use App\Exports\DataSimExport;
 use App\Exports\DataSioExport;
 use App\Exports\DataSirExport;
 use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -14,20 +13,13 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmailController;
-use App\Http\Controllers\FrameController;
-use App\Http\Controllers\LeaveController;
-use App\Http\Controllers\LensaController;
-use App\Http\Controllers\PasienController;
+
 use App\Http\Controllers\DatasimController;
 use App\Http\Controllers\DatasioController;
 use App\Http\Controllers\DatasirController;
-use App\Http\Controllers\PayrollController;
-use App\Http\Controllers\PesananController;
+;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\CustomersController;
-use App\Http\Controllers\PromotionController;
+
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\SendPromotionController;
@@ -94,9 +86,7 @@ Route::get('/api/users/search', function (Request $request) {
     Route::get('/users/list', [UserController::class, 'list']);
 
 
-    // Rute untuk manajemen SDM
-    Route::resource('departments', DepartmentController::class);
-    Route::resource('attendance', AttendanceController::class);
+    
 
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -128,8 +118,7 @@ Route::get('/export/sir', function () {
     return Excel::download(new DataSirExport, 'data_sir.xlsx');
 })->name('export.sir');
 
-    Route::resource('send-promotions', SendPromotionController::class);
-    Route::get('send-all-promotions', [EmailController::class, 'sendPromotionEmails'])->name('send.all.promotions');
+   
 });
 
 

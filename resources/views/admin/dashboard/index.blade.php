@@ -11,19 +11,21 @@
         </div>
     </div>
 
-    @if($hasExpired)
-    <div class="alert shadow-sm d-flex justify-content-between align-items-center"
-         style="background-color: #c82333; color: #fff; border-left: 5px solid #721c24; font-weight: bold;"
-         data-aos="zoom-in">
-        <div>
-            <i class="bx bx-error-circle me-2" style="font-size: 1.5rem;"></i>
-            ⚠️ Perhatian: Ada dokumen yang status-nya sudah expired.
-        </div>
-        <a href="{{ route('expired.documents') }}" class="btn btn-sm btn-light text-danger fw-bold shadow-sm">
-            Lihat Daftar
-        </a>
+   @if($hasExpired)
+<div class="alert shadow-sm d-flex justify-content-between align-items-center border-0"
+     style="background-color: #dc3545; color: #fff; font-weight: 500; border-left: 5px solid #b02a37;"
+     data-aos="zoom-in">
+    <div class="d-flex align-items-center">
+        <i class="bx bx-error-circle me-2" style="font-size: 1.5rem;"></i>
+        <span>⚠️ Perhatian: Terdapat dokumen yang sudah expired.</span>
     </div>
-    @endif
+    <a href="{{ route('expired.documents') }}" class="btn btn-sm btn-light text-danger fw-bold shadow-sm"
+       style="transition: all 0.3s;">
+        <i class="bx bx-show-alt me-1"></i> Lihat Daftar
+    </a>
+</div>
+@endif
+
     
     @if($simExpiringSoon->count() || $sioExpiringSoon->count() || $sirExpiringSoon->count())
     <div class="row mb-4" data-aos="zoom-in-right">

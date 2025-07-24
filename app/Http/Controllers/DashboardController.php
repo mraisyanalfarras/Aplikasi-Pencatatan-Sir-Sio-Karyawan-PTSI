@@ -11,6 +11,7 @@ class DashboardController extends Controller
 {
     public function index()
 {
+
     $now = now();
     $threshold = $now->copy()->addMonths(3);
 
@@ -38,6 +39,8 @@ class DashboardController extends Controller
     $expiredSios = DataSio::where('status', 'expired')->get();
     $expiredSirs = DataSir::where('status', 'expired')->get();
 
+    
+
     $hasExpired = !$expiredSims->isEmpty() || !$expiredSios->isEmpty() || !$expiredSirs->isEmpty();
     $hasExpiringSoon = !$simExpiringSoon->isEmpty() || !$sioExpiringSoon->isEmpty() || !$sirExpiringSoon->isEmpty();
 
@@ -62,5 +65,19 @@ class DashboardController extends Controller
         'hasExpiringSoon'
     ));
 }
+
+public function expiredList()
+{
+    $expiredSims = DataSim::where('status', 'expired')->get();
+    $expiredSios = DataSio::where('status', 'expired')->get();
+    $expiredSirs = DataSir::where('status', 'expired')->get();
+
+    return view('admin.dashboard.expired_list', compact(
+        'expiredSims',
+        'expiredSios',
+        'expiredSirs'
+    ));
+}
+
 
 }
