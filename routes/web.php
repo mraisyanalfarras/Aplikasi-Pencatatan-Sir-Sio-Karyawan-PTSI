@@ -11,19 +11,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\EmailController;
-
 use App\Http\Controllers\DatasimController;
 use App\Http\Controllers\DatasioController;
 use App\Http\Controllers\DatasirController;
-;
 use App\Http\Controllers\ProfileController;
-
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\SendPromotionController;
-use App\Http\Controllers\ExpiredDocumentController;
 use App\Http\Controllers\DashboardController; // pastikan ini di bagian atas
 
 /*
